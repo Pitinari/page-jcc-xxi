@@ -1,6 +1,5 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { LandingProps } from './types';
-import { useDraw } from './useDraw';
 import classNames from 'classnames';
 import "./styles.scss"
 
@@ -29,6 +28,11 @@ export const Landing: React.FC<LandingProps> = ({ className }) => {
     const boxInnerHeight = boxHeight * 18 / 20;
 
     return (<div className={classNames(className, 'landing', 'relative h-full w-full')}>
-        <div className={classNames(`h-[${Math.floor(windowSize[1] / 2 - boxHeight / 2)}px]`,'landing__tape')} />
+        <div className={'landing__tape'} style={{ height: boxHeight }}>
+            {Array(10).fill("").map((_, idx) => (
+                <div className='landing__box' style={{ height: boxInnerHeight, width: boxInnerWidth, transform: `translate(${(boxWidth * idx) - boxWidth/2}px,-50%)`  }} key={idx}/>
+            ))}
+        </div>
+        <div className='landing__pointer' style={{ transform: `translate(${(boxWidth-20)}px,-${boxHeight/2 + 24}px)` }}></div>
     </div>)
 }
