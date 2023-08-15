@@ -1,5 +1,5 @@
 import { useEffect, useRef } from 'react';
-import { LandingProps } from './types';
+import { BoxProps, LandingProps } from './types';
 import classNames from 'classnames';
 import "./styles.scss"
 import { useWindowDimensions } from './useWindowDimensions';
@@ -54,15 +54,29 @@ export const Landing: React.FC<LandingProps> = ({ className }) => {
     const boxInnerHeight = boxHeight * 18 / 20;
 
     return (
-        <div className={classNames(className, 'landing', 'relative h-full w-full')}>
-            <div className={'landing__tape'} style={{ height: boxHeight }}>
-                {Array(9).fill("").map((char, idx) => (
-                    <div className='landing__box' style={{ height: boxInnerHeight, width: boxInnerWidth, transform: `translate(${(boxWidth * idx) - boxWidth/2}px,-50%)`  }} key={idx}>
-                        <h1 className='landing__box__character' style={{ fontSize: boxInnerHeight -20 }} id={`char__${idx}`}>{char}</h1>
-                    </div>
-                ))}
+        <div className={classNames(className, "landing", "relative h-full w-full")}>
+            <div className={"landing__tape"} style={{ height: boxHeight }}>
+            {Array(9).fill("").map((char, idx) => (
+                <Box idx={idx} char={char} width={boxWidth} innerWidth={boxInnerWidth} innerHeight={boxInnerHeight} key={idx} />
+            ))}
             </div>
-            <div className='landing__pointer' style={{ transform: `translate(${boxWidth -25}px,-${boxHeight/2 + 24}px)` }}></div>
+            <Pointer width={boxWidth} height={boxHeight} />
         </div>
     );
+}
+
+function Box({ idx, char, width, innerWidth, innerHeight }: BoxProps) {
+  return (
+    <div className="landing__box" style={{ height: innerHeight, width: innerWidth, transform: `translate(${width * idx - width / 2}px, -50%)` }} key={idx}>
+        <h1 className="landing__box__character" style={{ fontSize: innerHeight - 20 }} id={`char__${idx}`}>
+            {char}
+        </h1>
+    </div>
+  );
+}
+
+function Pointer({ width, height }: { width: number; height: number }) {
+  return (
+    <div className="landing__pointer" style={{ transform: `translate(${width - 25}px,-${height / 2 + 50}px)` }}></div>
+  );
 }
