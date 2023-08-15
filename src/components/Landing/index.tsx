@@ -4,15 +4,16 @@ import classNames from 'classnames';
 import "./styles.scss"
 import { useWindowDimensions } from './useWindowDimensions';
 
+function replaceCharacter(idx: number, newChar: string) {
+    document.getElementById(`char__${idx}`)!.replaceChildren(newChar);
+}
+
 export const Landing: React.FC<LandingProps> = ({ className }) => {
 
     const [windowWidth] = useWindowDimensions();
 
     const intervals = useRef(Array(9).fill(0));
-    // const [tape, setTape] = useState(
-    //     Array(9).fill("").map(_ => String.fromCharCode(Math.random() * 93 + 33))
-    // );
-    // console.log(tape);
+    const timeouts = useRef(Array(9).fill(0));
 
     useEffect(() => {
         // We do this so that the linter doesn't complain
@@ -21,13 +22,30 @@ export const Landing: React.FC<LandingProps> = ({ className }) => {
 
         currentIntervals.forEach((_, idx) => {
             currentIntervals[idx] = setInterval(() => {
-                const character = document.getElementById(`char__${idx}`);
-                if (character)
-                    character.replaceChildren(String.fromCharCode(Math.random() * 93 + 33));
-            }, 300 + Math.random() * 50);
+
+                replaceCharacter(idx, String.fromCharCode(Math.random() * 93 + 33));
+
+            }, 100 + Math.random() * 50);
         });
 
         return () => currentIntervals.forEach(clearInterval);
+    }, []);
+
+    useEffect(() => {
+        const currentIntervals = intervals.current;
+        const currentTimeouts = timeouts.current;
+
+        currentTimeouts.forEach((_, idx) => {
+            currentTimeouts[idx] = setTimeout(() => {
+
+                clearInterval(currentIntervals[idx]);
+
+                replaceCharacter(idx, " JCC XII "[idx]);
+
+            }, 500 + 200 * (idx + 1));
+        });
+
+        return () => currentTimeouts.forEach(clearTimeout);
     }, []);
 
     const boxWidth = windowWidth / 8;
