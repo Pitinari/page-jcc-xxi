@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { BoxProps, LandingProps } from './types';
 import classNames from 'classnames';
 import "./styles.scss"
@@ -14,6 +14,8 @@ export const Landing: React.FC<LandingProps> = ({ className }) => {
 
     const intervals = useRef(Array(9).fill(0));
     const timeouts = useRef(Array(9).fill(0));
+
+    const [pointerPos, setPointerPos] = useState(-1); // matches idx of the box the pointer is pointing at
 
     useEffect(() => {
         // We do this so that the linter doesn't complain
@@ -48,6 +50,20 @@ export const Landing: React.FC<LandingProps> = ({ className }) => {
         return () => currentTimeouts.forEach(clearTimeout);
     }, []);
 
+    useEffect(() => {
+        // move pointer from -1 to 9 synchronously with the boxes
+        let pointerInterval: number = 0;
+
+        const pointerTimeout = setTimeout(() => {
+            pointerInterval = setInterval(() => setPointerPos(prev => Math.min(9, prev + 1)), 200);
+        }, 500);
+
+        return () => {
+            clearTimeout(pointerTimeout);
+            clearInterval(pointerInterval);
+        }
+    }, []);
+
     const boxWidth = windowWidth / 8;
     const boxHeight = boxWidth;
     const boxInnerWidth = boxWidth * 18 / 20;
@@ -60,23 +76,51 @@ export const Landing: React.FC<LandingProps> = ({ className }) => {
                 <Box idx={idx} char={char} width={boxWidth} innerWidth={boxInnerWidth} innerHeight={boxInnerHeight} key={idx} />
             ))}
             </div>
-            <Pointer width={boxWidth} height={boxHeight} />
+            <Pointer points={pointerPos} width={boxWidth} height={boxHeight} />
+            <Square points={pointerPos} width={boxWidth} height={boxHeight} innerWidth={boxInnerWidth} innerHeight={boxInnerHeight} />
         </div>
     );
 }
 
 function Box({ idx, char, width, innerWidth, innerHeight }: BoxProps) {
-  return (
-    <div className="landing__box" style={{ height: innerHeight, width: innerWidth, transform: `translate(${width * idx - width / 2}px, -50%)` }} key={idx}>
-        <h1 className="landing__box__character" style={{ fontSize: innerHeight - 20 }} id={`char__${idx}`}>
-            {char}
-        </h1>
-    </div>
-  );
+    return (
+        <div className="landing__box" style={{ height: innerHeight, width: innerWidth, transform: `translate(${width * idx - width / 2}px, -50%)` }} key={idx}>
+            <h1 className="landing__box__character" style={{ fontSize: innerHeight - 20 }} id={`char__${idx}`}>
+                {char}
+            </h1>
+        </div>
+    );
 }
 
-function Pointer({ width, height }: { width: number; height: number }) {
-  return (
-    <div className="landing__pointer" style={{ transform: `translate(${width - 25}px,-${height / 2 + 50}px)` }}></div>
-  );
+function Pointer({ points, width, height }: { points: number, width: number; height: number }) {
+    const borderWidth = "2vw";
+
+    const borderTop = `${borderWidth} solid white`;
+    const borderLeft = `${borderWidth} solid transparent`;
+    const borderRight = `${borderWidth} solid transparent`;
+
+    const top = "50%";
+
+    const translateX = points * width - width / 4 + 5;
+    const translateY = 3 * height / 4;
+
+    return (
+        <div className="landing__pointer" style={{ transform: `translate(${translateX}px, -${translateY}px)`, borderTop, borderLeft, borderRight, top }}></div>
+    );
+}
+
+function Square({ points, width, height, innerWidth, innerHeight }: { points: number, width: number; height: number, innerWidth: number, innerHeight: number }) {
+    const borderWidth = Math.min(innerWidth, innerHeight) * 0.05;
+
+    const top = `calc(50% + ${borderWidth}px)`;
+
+    const w = innerWidth * 0.9;
+    const h = innerHeight * 0.9;
+
+    const translateX = points * width - width / 2 + borderWidth;
+    const translateY = height / 2 - borderWidth;
+
+    return (
+        <div className="landing__square" style={{ transform: `translate(${translateX}px,-${translateY}px)`, width: w, height: h, borderWidth, top }}></div>
+    );
 }
