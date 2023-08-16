@@ -42,7 +42,7 @@ export const Landing: React.FC<LandingProps> = ({ className }) => {
 
                 clearInterval(currentIntervals[idx]);
 
-                replaceCharacter(idx, " JCC XII "[idx]);
+                replaceCharacter(idx, " JCC XXI "[idx]);
 
             }, 500 + 200 * (idx + 1));
         });
