@@ -1,57 +1,126 @@
 import { useEffect, useRef, useState } from 'react';
-import { LandingProps } from './types';
+import { BoxProps, LandingProps } from './types';
 import classNames from 'classnames';
 import "./styles.scss"
+import { useWindowDimensions } from './useWindowDimensions';
+
+function replaceCharacter(idx: number, newChar: string) {
+    document.getElementById(`char__${idx}`)!.replaceChildren(newChar);
+}
 
 export const Landing: React.FC<LandingProps> = ({ className }) => {
 
-    const [windowSize, setWindowSize] = useState([
-        window.innerWidth,
-        window.innerHeight,
-    ]);
+    const [windowWidth] = useWindowDimensions();
+
     const intervals = useRef(Array(9).fill(0));
-    // const [tape, setTape] = useState(
-    //     Array(9).fill("").map(_ => String.fromCharCode(Math.random() * 93 + 33)) 
-    // );
-    // console.log(tape);
-    
+    const timeouts = useRef(Array(9).fill(0));
+
+    const [pointerPos, setPointerPos] = useState(-1); // matches idx of the box the pointer is pointing at
 
     useEffect(() => {
-        const handleWindowResize = () => {
-            setWindowSize([window.innerWidth, window.innerHeight]);
-        };
+        // We do this so that the linter doesn't complain
+        // about using "current" in the destructor, which may change
+        const currentIntervals = intervals.current;
 
-        window.addEventListener('resize', handleWindowResize);
+        currentIntervals.forEach((_, idx) => {
+            currentIntervals[idx] = setInterval(() => {
 
-        intervals.current.forEach((_, idx) => {
-            intervals.current[idx] = setInterval(() => {
-                const character = document.getElementById(`char__${idx}`);
-                if(character){
-                    character.replaceChildren(String.fromCharCode(Math.random() * 93 + 33));
-                }          
-                
-            }, 300 + Math.random() * 50)
-        })
+                replaceCharacter(idx, String.fromCharCode(Math.random() * 93 + 33));
 
-        return () => {
-            window.removeEventListener('resize', handleWindowResize);
-            intervals.current.forEach(int => clearInterval(int))
-        };
+            }, 100 + Math.random() * 50);
+        });
+
+        return () => currentIntervals.forEach(clearInterval);
     }, []);
 
-    const boxWidth = windowSize[0] / 8;
+    useEffect(() => {
+        const currentIntervals = intervals.current;
+        const currentTimeouts = timeouts.current;
+
+        currentTimeouts.forEach((_, idx) => {
+            currentTimeouts[idx] = setTimeout(() => {
+
+                clearInterval(currentIntervals[idx]);
+
+                replaceCharacter(idx, " JCC XXI "[idx]);
+
+            }, 500 + 200 * (idx + 1));
+        });
+
+        return () => currentTimeouts.forEach(clearTimeout);
+    }, []);
+
+    useEffect(() => {
+        // move pointer from -1 to 9 synchronously with the boxes
+        let pointerInterval: number = 0;
+
+        const pointerTimeout = setTimeout(() => {
+            pointerInterval = setInterval(() => setPointerPos(prev => Math.min(9, prev + 1)), 200);
+        }, 500);
+
+        return () => {
+            clearTimeout(pointerTimeout);
+            clearInterval(pointerInterval);
+        }
+    }, []);
+
+    const boxWidth = windowWidth / 8;
     const boxHeight = boxWidth;
     const boxInnerWidth = boxWidth * 18 / 20;
     const boxInnerHeight = boxHeight * 18 / 20;
 
-    return (<div className={classNames(className, 'landing', 'relative h-full w-full')}>
-        <div className={'landing__tape'} style={{ height: boxHeight }}>
+    return (
+        <div className={classNames(className, "landing", "relative h-full w-full")}>
+            <div className={"landing__tape"} style={{ height: boxHeight }}>
             {Array(9).fill("").map((char, idx) => (
-                <div className='landing__box' style={{ height: boxInnerHeight, width: boxInnerWidth, transform: `translate(${(boxWidth * idx) - boxWidth/2}px,-50%)`  }} key={idx}>
-                    <h1 className='landing__box__character' style={{ fontSize: boxInnerHeight -20 }} id={`char__${idx}`}>{char}</h1>
-                </div>
+                <Box idx={idx} char={char} width={boxWidth} innerWidth={boxInnerWidth} innerHeight={boxInnerHeight} key={idx} />
             ))}
+            </div>
+            <Pointer points={pointerPos} width={boxWidth} height={boxHeight} />
+            <Square points={pointerPos} width={boxWidth} height={boxHeight} innerWidth={boxInnerWidth} innerHeight={boxInnerHeight} />
         </div>
-        <div className='landing__pointer' style={{ transform: `translate(${boxWidth -25}px,-${boxHeight/2 + 24}px)` }}></div>
-    </div>)
+    );
+}
+
+function Box({ idx, char, width, innerWidth, innerHeight }: BoxProps) {
+    return (
+        <div className="landing__box" style={{ height: innerHeight, width: innerWidth, transform: `translate(${width * idx - width / 2}px, -50%)` }} key={idx}>
+            <h1 className="landing__box__character" style={{ fontSize: innerHeight - 20 }} id={`char__${idx}`}>
+                {char}
+            </h1>
+        </div>
+    );
+}
+
+function Pointer({ points, width, height }: { points: number, width: number; height: number }) {
+    const borderWidth = "2vw";
+
+    const borderTop = `${borderWidth} solid white`;
+    const borderLeft = `${borderWidth} solid transparent`;
+    const borderRight = `${borderWidth} solid transparent`;
+
+    const top = "50%";
+
+    const translateX = points * width - width / 4 + 5;
+    const translateY = 3 * height / 4;
+
+    return (
+        <div className="landing__pointer" style={{ transform: `translate(${translateX}px, -${translateY}px)`, borderTop, borderLeft, borderRight, top }}></div>
+    );
+}
+
+function Square({ points, width, height, innerWidth, innerHeight }: { points: number, width: number; height: number, innerWidth: number, innerHeight: number }) {
+    const borderWidth = Math.min(innerWidth, innerHeight) * 0.05;
+
+    const top = `calc(50% + ${borderWidth}px)`;
+
+    const w = innerWidth * 0.9;
+    const h = innerHeight * 0.9;
+
+    const translateX = points * width - width / 2 + borderWidth;
+    const translateY = height / 2 - borderWidth;
+
+    return (
+        <div className="landing__square" style={{ transform: `translate(${translateX}px,-${translateY}px)`, width: w, height: h, borderWidth, top }}></div>
+    );
 }
