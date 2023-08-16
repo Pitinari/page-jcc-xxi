@@ -13,7 +13,6 @@ export const Landing: React.FC<LandingProps> = ({ className }) => {
     const [windowWidth] = useWindowDimensions();
 
     const intervals = useRef(Array(9).fill(0));
-    const timeouts = useRef(Array(9).fill(0));
 
     const [pointerPos, setPointerPos] = useState(-1); // matches idx of the box the pointer is pointing at
 
@@ -34,33 +33,14 @@ export const Landing: React.FC<LandingProps> = ({ className }) => {
     }, []);
 
     useEffect(() => {
-        const currentIntervals = intervals.current;
-        const currentTimeouts = timeouts.current;
-
-        currentTimeouts.forEach((_, idx) => {
-            currentTimeouts[idx] = setTimeout(() => {
-
-                clearInterval(currentIntervals[idx]);
-
-                replaceCharacter(idx, " JCC XXI "[idx]);
-
-            }, 500 + 200 * (idx + 1));
-        });
-
-        return () => currentTimeouts.forEach(clearTimeout);
-    }, []);
-
-    useEffect(() => {
         // move pointer from -1 to 9 synchronously with the boxes
-        let pointerInterval: number = 0;
 
         const pointerTimeout = setTimeout(() => {
-            pointerInterval = setInterval(() => setPointerPos(prev => Math.min(9, prev + 1)), 200);
+            setPointerPos(prev => Math.min(9, prev + 1));
         }, 500);
 
         return () => {
             clearTimeout(pointerTimeout);
-            clearInterval(pointerInterval);
         }
     }, []);
 
@@ -76,7 +56,13 @@ export const Landing: React.FC<LandingProps> = ({ className }) => {
                 <Box idx={idx} char={char} width={boxWidth} innerWidth={boxInnerWidth} innerHeight={boxInnerHeight} key={idx} />
             ))}
             </div>
-            <Pointer points={pointerPos} width={boxWidth} height={boxHeight} />
+            <Pointer onTransitionEnd={() => {
+                clearInterval(intervals.current[pointerPos]);
+                replaceCharacter(pointerPos, "_JCC_XXI_"[pointerPos]);
+                setTimeout(() => {             
+                    setPointerPos(prev => Math.min(9, prev + 1))
+                }, 100 * Math.random());
+            }} points={pointerPos} width={boxWidth} height={boxHeight} />
             <Square points={pointerPos} width={boxWidth} height={boxHeight} innerWidth={boxInnerWidth} innerHeight={boxInnerHeight} />
         </div>
     );
@@ -92,7 +78,7 @@ function Box({ idx, char, width, innerWidth, innerHeight }: BoxProps) {
     );
 }
 
-function Pointer({ points, width, height }: { points: number, width: number; height: number }) {
+function Pointer({ points, width, height, onTransitionEnd }: { points: number, width: number; height: number, onTransitionEnd?: () => void; }) {
     const borderWidth = "2vw";
 
     const borderTop = `${borderWidth} solid white`;
@@ -105,7 +91,7 @@ function Pointer({ points, width, height }: { points: number, width: number; hei
     const translateY = 3 * height / 4;
 
     return (
-        <div className="landing__pointer" style={{ transform: `translate(${translateX}px, -${translateY}px)`, borderTop, borderLeft, borderRight, top }}></div>
+        <div onTransitionEnd={onTransitionEnd} className="landing__pointer" style={{ transform: `translate(${translateX}px, -${translateY}px)`, borderTop, borderLeft, borderRight, top }}></div>
     );
 }
 
