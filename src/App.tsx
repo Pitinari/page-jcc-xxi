@@ -1,4 +1,4 @@
-import { PropsWithChildren } from 'react';
+import { PropsWithChildren, useEffect, useRef, useState } from 'react';
 import './App.css'
 import { Landing } from './components/Landing'
 
@@ -32,6 +32,53 @@ function Link({ children }: PropsWithChildren) {
 
 function Grid3({ children }: PropsWithChildren) {
   return <div className="grid content-center w-full grid-cols-3 gap-10 justify-items-center">{children}</div>;
+}
+
+function Day({ number, date, children }: PropsWithChildren<{ number: number; date: string }>) {
+  return (
+    <div className="w-full">
+      <h2 className="p-5 text-2xl">
+        Día {number} - <span className="text-gray-500">{date}</span>
+      </h2>
+      {children}
+    </div>
+  );
+}
+
+function Event({ time, title, speakers, gray, children }: PropsWithChildren<{ time: string; title: string; speakers?: string; gray?: boolean }>) {
+  const [open, setOpen] = useState<boolean>(false);
+  const [maxHeight, setMaxHeight] = useState<string>("0px");
+
+  const toggle = () => setOpen(open => !open);
+
+  const contentRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (contentRef.current)
+      setMaxHeight(open ? `${contentRef.current.scrollHeight}px` : "0px");
+  }, [contentRef, open]);
+
+  return (
+    <div className="text-left border-t first:rounded-t last:rounded-b border-x last:border-b">
+
+      <div className={`${gray ? "bg-gray-100" : "bg-white"} p-5 flex items-center justify-between ${children ? "cursor-pointer" : ""}`} onClick={toggle}>
+        <h3>
+          {title}
+          {speakers && <p className="text-sm font-light text-gray-600">{speakers}</p>}
+        </h3>
+        {time}
+      </div>
+
+      {children && (
+        <div className="overflow-hidden duration-300 ease-in-out transition-max-height" style={{ maxHeight }}>
+          <div ref={contentRef} className="p-5 font-light text-blue-800 border-t bg-blue-50">
+            {children}
+          </div>
+        </div>
+      )}
+
+    </div>
+  );
 }
 
 function App() {
@@ -79,9 +126,33 @@ function App() {
           </Section>
           <Section>
             <LeftTitle>Cronograma</LeftTitle>
+            <Day number={1} date="5 de Octubre">
+              <Event time="12:15" title="Almuerzo" gray={true} />
+              <Event time="12:45" title="Acto de apertura" />
+              <Event time="13:00" title="Historia LCC y JCC" speakers="Mauro Jaskelioff y Raúl Kantor">
+                En este panel recorreremos la historia de nuestra carrera, de la JCC y del DCC, contando anécdotas para que charlemos y hagamos un viaje al
+                pasado.
+              </Event>
+            </Day>
+            <Day number={2} date="6 de Octubre">
+              <Event time="09:00" title="Taller de Programación Competitiva" speakers="Mariano Crosetti, Sebastián Mestre y Franco de Rico">
+                Vamos a dar dos clases muy entretenidas de algoritmia y estructuras de datos:
+                <br />
+                • Clase de Grafos: DFS, BFS, Algoritmo de Tarjan para encontrar las componentes fuertemente conexas en un grafo dirigido. Luego de esta clase
+                van a estar en condiciones de atacar el problema H del Torneo Argentino de Programación 2022: click aqui
+                <br />• Clase de Strings: Hashing, Z Algorithm, KMP. Luego de esta clase van a estar en condiciones de atacar (por ejemplo) el problema de
+                contar la cantidad de subcadenas que sean palíndromo en una cadena de caracteres dada: click aqui El taller se realiza en el Laboratorio 1er
+                piso
+              </Event>
+            </Day>
           </Section>
           <Section>
             <LeftTitle>Actividades</LeftTitle>
+            <Day number={1} date="5 de Octubre">
+              <Event time="20:00" title="Fútbol Mixto">
+                Vuelve el clásico futbol 5 de la LCC Ubicación: Instituto Politécnico Superior Gral. San Martín
+              </Event>
+            </Day>
           </Section>
           <Section>
             <CenterTitle>Patrocinadores</CenterTitle>
