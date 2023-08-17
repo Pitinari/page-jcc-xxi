@@ -1,43 +1,57 @@
-import { PropsWithChildren, forwardRef, useEffect, useRef, useState } from 'react';
+import { PropsWithChildren, forwardRef, useRef } from 'react';
 import './App.css'
 import { Landing } from './components/Landing'
+import { useAccordion } from './useAccordion';
 
 function Nav({ children }: PropsWithChildren) {
   return (
-    <nav className="contents">
+    <nav className="hidden md:contents">
       <ul className="contents">{children}</ul>
     </nav>
   );
 }
 
+function MobileNav({ children }: PropsWithChildren) {
+  const [ref, maxHeight, toggle] = useAccordion();
+
+  return (
+    <>
+      <button className="md:hidden" onClick={toggle}>{maxHeight === "0px" ? "↓" : "↑"}</button>
+      <nav ref={ref} className="w-full overflow-hidden duration-300 ease-in-out md:hidden transition-max-height" style={{ maxHeight }}>
+        <ul className="flex flex-col gap-5 p-5">{children}</ul>
+      </nav>
+    </>
+  );
+}
+
 function CenterTitle({ children }: PropsWithChildren) {
-  return <h1 className="text-4xl font-bold">{children}</h1>;
+  return <h1 className="text-2xl font-bold md:text-4xl">{children}</h1>;
 }
 
 function LeftTitle({ children }: PropsWithChildren) {
-  return <h1 className="self-start text-4xl font-bold">{children}</h1>;
+  return <h1 className="self-start text-2xl font-bold md:text-4xl">{children}</h1>;
 }
 
 const Section = forwardRef<HTMLDivElement, PropsWithChildren>(({ children }, ref) => {
-  return <section ref={ref} className="flex flex-col items-center justify-center gap-10 p-10 rounded shadow-lg scroll-m-16">{children}</section>;
+  return <section ref={ref} className="flex flex-col items-center justify-center gap-10 p-5 rounded shadow-lg md:p-10 scroll-m-16">{children}</section>;
 });
 
 function Text({ children }: PropsWithChildren) {
-  return <p className="text-xl font-light leading-relaxed">{children}</p>;
+  return <p className="font-light leading-relaxed text-justify md:text-center md:text-xl">{children}</p>;
 }
 
 function Link({ children }: PropsWithChildren) {
-  return <span className="p-5 border border-black rounded-full">{children}</span>;
+  return <span className="p-3 border border-black rounded-full md:p-5">{children}</span>;
 }
 
 function Grid3({ children }: PropsWithChildren) {
-  return <div className="grid content-center w-full grid-cols-3 gap-10 justify-items-center">{children}</div>;
+  return <div className="grid content-center w-full grid-cols-1 gap-10 md:grid-cols-3 justify-items-center">{children}</div>;
 }
 
 function Day({ number, date, children }: PropsWithChildren<{ number: number; date: string }>) {
   return (
     <div className="w-full">
-      <h2 className="p-5 text-2xl">
+      <h2 className="p-3 md:p-5 md:text-2xl">
         Día {number} - <span className="text-gray-500">{date}</span>
       </h2>
       {children}
@@ -46,32 +60,20 @@ function Day({ number, date, children }: PropsWithChildren<{ number: number; dat
 }
 
 function Event({ time, title, speakers, gray, children }: PropsWithChildren<{ time: string; title: string; speakers?: string; gray?: boolean }>) {
-  const [open, setOpen] = useState<boolean>(false);
-  const [maxHeight, setMaxHeight] = useState<string>("0px");
-
-  const toggle = () => setOpen(open => !open);
-
-  const contentRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    if (contentRef.current)
-      setMaxHeight(open ? `${contentRef.current.scrollHeight}px` : "0px");
-  }, [contentRef, open]);
+  const [ref, maxHeight, toggle] = useAccordion();
 
   return (
-    <div className="text-left border-t first:rounded-t last:rounded-b border-x last:border-b">
+    <div className="text-xs border-t md:text-left first:rounded-t last:rounded-b border-x last:border-b md:text-base">
 
-      <div className={`${gray ? "bg-gray-100" : "bg-white"} p-5 flex items-center justify-between ${children ? "cursor-pointer" : ""}`} onClick={toggle}>
-        <h3>
-          {title}
-          {speakers && <p className="text-sm font-light text-gray-600">{speakers}</p>}
-        </h3>
-        {time}
+      <div className={`${gray ? "bg-gray-100" : "bg-white"} p-3 md:p-5 gap-3 flex flex-wrap items-center justify-between ${children ? "cursor-pointer" : ""}`} onClick={toggle}>
+        <span>{title}</span>
+        <span>{time}</span>
+        {speakers && <p className="w-full font-light text-left text-gray-600 md:text-sm">{speakers}</p>}
       </div>
 
       {children && (
-        <div className="overflow-hidden duration-300 ease-in-out transition-max-height" style={{ maxHeight }}>
-          <div ref={contentRef} className="p-5 font-light text-blue-800 border-t bg-blue-50">
+        <div className="overflow-hidden text-justify duration-300 ease-in-out transition-max-height md:text-left" style={{ maxHeight }}>
+          <div ref={ref} className="p-5 font-light text-blue-800 border-t bg-blue-50">
             {children}
           </div>
         </div>
@@ -82,7 +84,7 @@ function Event({ time, title, speakers, gray, children }: PropsWithChildren<{ ti
 }
 
 function Title({ children }: PropsWithChildren) {
-  return <h1 className="text-4xl">{children}</h1>;
+  return <h1 className="text-2xl md:text-4xl">{children}</h1>;
 }
 
 function NavItem({ children, scroll }: PropsWithChildren<{ scroll: () => void }>) {
@@ -108,7 +110,7 @@ function App() {
 
     return (
       <>
-        <header className="sticky top-0 z-30 flex items-center h-16 text-xl text-gray-800 bg-white shadow gap-7 p-7">
+        <header className="sticky top-0 z-30 flex flex-wrap items-center justify-between text-gray-800 bg-white shadow min-h-[4rem] md:justify-start md:text-xl md:gap-7 px-7 py-5">
           <Title>
             <NavItem scroll={() => scrollToTop()}>JCC 2023</NavItem>
           </Title>
@@ -118,8 +120,14 @@ function App() {
             <NavItem scroll={() => scrollTo(actividadesRef)}>Actividades</NavItem>
             <NavItem scroll={() => scrollTo(apoyoRef)}>Apoyo</NavItem>
           </Nav>
+          <MobileNav>
+            <NavItem scroll={() => scrollTo(infoRef)}>Info</NavItem>
+            <NavItem scroll={() => scrollTo(cronogramaRef)}>Cronograma</NavItem>
+            <NavItem scroll={() => scrollTo(actividadesRef)}>Actividades</NavItem>
+            <NavItem scroll={() => scrollTo(apoyoRef)}>Apoyo</NavItem>
+          </MobileNav>
         </header>
-        <Landing />
+        <Landing className="h-64 md:h-96 lg:h-full" />
         <main className="flex flex-col max-w-screen-lg gap-5 py-5 m-auto text-center text-gray-800">
           <Section>
             <CenterTitle>Jornadas de Ciencias de la Computación</CenterTitle>
@@ -129,7 +137,7 @@ function App() {
               Facultad de Ciencias Exactas, Ingeniería y Agrimensura, además de actividades y talleres abiertos para todos los asistentes. También estaremos
               difundiendo más información en la cuenta de Instagram de las JCC.
             </Text>
-            <div className="flex items-center gap-10 text-4xl">
+            <div className="flex items-center gap-10 text-2xl md:text-4xl">
               <Link>YT</Link>
               <Link>IG</Link>
             </div>
@@ -200,14 +208,14 @@ function App() {
             </Grid3>
           </Section>
         </main>
-        <footer className="flex flex-col items-center justify-center gap-5 p-5 text-center text-gray-800 bg-white border-t">
-          <div className="flex items-center justify-between w-full">
-            <div className="text-left">
+        <footer className="flex flex-col items-center justify-center gap-3 p-3 text-xs text-center text-gray-800 bg-white border-t md:gap-5 md:p-5 md:text-base">
+          <div className="flex flex-col items-start justify-between w-full gap-3 text-left md:items-center md:flex-row">
+            <div className="md:text-left">
               Licenciatura en Ciencias de la Computación <br />
               Facultad de Ciencias Exactas, <br />
               Ingeniería y Agrimensura Universidad Nacional de Rosario
             </div>
-            <div className="text-right">
+            <div className="md:text-right">
               Pellegrini 250, Rosario, Santa Fe, Argentina <br />
               (0341) 480-2649/60 <br />
               jcc@fceia.unr.edu.ar
