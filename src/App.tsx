@@ -1,4 +1,4 @@
-import { PropsWithChildren, useEffect, useRef, useState } from 'react';
+import { PropsWithChildren, forwardRef, useEffect, useRef, useState } from 'react';
 import './App.css'
 import { Landing } from './components/Landing'
 
@@ -18,9 +18,9 @@ function LeftTitle({ children }: PropsWithChildren) {
   return <h1 className="self-start text-4xl font-bold">{children}</h1>;
 }
 
-function Section({ children }: PropsWithChildren) {
-  return <section className="flex flex-col items-center justify-center gap-10 p-10 rounded shadow-lg"> {children} </section>;
-}
+const Section = forwardRef<HTMLDivElement, PropsWithChildren>(({ children }, ref) => {
+  return <section ref={ref} className="flex flex-col items-center justify-center gap-10 p-10 rounded shadow-lg scroll-m-16">{children}</section>;
+});
 
 function Text({ children }: PropsWithChildren) {
   return <p className="text-xl font-light leading-relaxed">{children}</p>;
@@ -81,16 +81,42 @@ function Event({ time, title, speakers, gray, children }: PropsWithChildren<{ ti
   );
 }
 
+function Title({ children }: PropsWithChildren) {
+  return <h1 className="text-4xl">{children}</h1>;
+}
+
+function NavItem({ children, scroll }: PropsWithChildren<{ scroll: () => void }>) {
+  return <li className="list-none transition-colors cursor-pointer hover:text-red-800" onClick={scroll}>{children}</li>;
+}
+
 function App() {
+    const infoRef = useRef<HTMLDivElement>(null);
+    const cronogramaRef = useRef<HTMLDivElement>(null);
+    const actividadesRef = useRef<HTMLDivElement>(null);
+    const apoyoRef = useRef<HTMLDivElement>(null);
+
+    const scrollTo = (ref: React.RefObject<HTMLDivElement>) => {
+      if (ref.current)
+        ref.current.scrollIntoView({ behavior: "smooth" });
+    };
+
+    // ! Not working. A possible solution is to attach a ref to
+    // ! the Landing component and use that to scroll to the top
+    const scrollToTop = () => {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    };
+
     return (
       <>
         <header className="sticky top-0 z-30 flex items-center h-16 text-xl text-gray-800 bg-white shadow gap-7 p-7">
-          <h1 className="text-4xl">JCC 2023</h1>
+          <Title>
+            <NavItem scroll={() => scrollToTop()}>JCC 2023</NavItem>
+          </Title>
           <Nav>
-            <li>Info</li>
-            <li>Cronograma</li>
-            <li>Actividades</li>
-            <li>Apoyo</li>
+            <NavItem scroll={() => scrollTo(infoRef)}>Info</NavItem>
+            <NavItem scroll={() => scrollTo(cronogramaRef)}>Cronograma</NavItem>
+            <NavItem scroll={() => scrollTo(actividadesRef)}>Actividades</NavItem>
+            <NavItem scroll={() => scrollTo(apoyoRef)}>Apoyo</NavItem>
           </Nav>
         </header>
         <Landing />
@@ -108,7 +134,7 @@ function App() {
               <Link>IG</Link>
             </div>
           </Section>
-          <Section>
+          <Section ref={infoRef}>
             <CenterTitle>Sobre las Jornadas</CenterTitle>
             <Text>
               Las Jornadas de Ciencias de la Computación son una iniciativa del Departamento de Ciencias de la Computación de la Facultad de Ciencias Exactas,
@@ -124,7 +150,7 @@ function App() {
               constituye un logro significativo del cuerpo docente y estudiantil de la carrera Licenciatura en Ciencias de la Computación.
             </Text>
           </Section>
-          <Section>
+          <Section ref={cronogramaRef}>
             <LeftTitle>Cronograma</LeftTitle>
             <Day number={1} date="5 de Octubre">
               <Event time="12:15" title="Almuerzo" gray={true} />
@@ -146,7 +172,7 @@ function App() {
               </Event>
             </Day>
           </Section>
-          <Section>
+          <Section ref={actividadesRef}>
             <LeftTitle>Actividades</LeftTitle>
             <Day number={1} date="5 de Octubre">
               <Event time="20:00" title="Fútbol Mixto">
@@ -154,7 +180,7 @@ function App() {
               </Event>
             </Day>
           </Section>
-          <Section>
+          <Section ref={apoyoRef}>
             <CenterTitle>Patrocinadores</CenterTitle>
             <Grid3>
               <span>DeepAgro</span>
