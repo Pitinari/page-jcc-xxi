@@ -174,6 +174,23 @@ function App() {
             </Grid3>
           </Section>
         </main>
+        <footer className="flex flex-col items-center justify-center gap-5 p-5 text-center text-gray-800 bg-white border-t">
+          <div className="flex items-center justify-between w-full">
+            <div className="text-left">
+              Licenciatura en Ciencias de la Computación <br />
+              Facultad de Ciencias Exactas, <br />
+              Ingeniería y Agrimensura Universidad Nacional de Rosario
+            </div>
+            <div className="text-right">
+              Pellegrini 250, Rosario, Santa Fe, Argentina <br />
+              (0341) 480-2649/60 <br />
+              jcc@fceia.unr.edu.ar
+            </div>
+          </div>
+          <div className="w-full pt-5 border-t">
+            Otras ediciones - 2005 - 2006 - 2007 - 2008 - 2009 - 2010 - 2011 - 2012 - 2013 - 2014 - 2015 - 2016 - 2017 - 2018 - 2019 - 2020 - 2021 - 2023
+          </div>
+        </footer>
       </>
     );
 }
