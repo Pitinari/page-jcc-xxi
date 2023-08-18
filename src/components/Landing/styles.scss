@@ -1,5 +1,14 @@
+
+
 .landing {
-    background-color: black;
+    --window-width: 100vw;
+    --box-width: calc(var(--window-width) / 8);
+    --box-height: var(--box-width);
+    --box-inner-width: calc(var(--box-width) * 18  / 20);
+    --box-inner-height: calc(var(--box-height) * 18  / 20);
+
+    --bg-color: #5F021F;
+    background-color: var(--bg-color);
     font-family: 'Ubuntu';
     user-select: none;
     overflow: hidden;
@@ -7,6 +16,7 @@
     &__tape {
         position: absolute;
         width: 100%;
+        height: var(--box-height);
         top: 50%;
         transform: translateY(-50%);
         background-color: white;
@@ -15,7 +25,10 @@
     &__box {
         position: absolute;
         top: 50%;
-        background-color: black;
+        height: var(--box-inner-height);
+        width: var(--box-inner-width);
+        transform: translate(calc(var(--box-width) * var(--idx) - var(--box-width) / 2), -50%);
+        background-color: var(--bg-color);
         border-radius: 10%;
         display: flex;
         justify-content: center;
@@ -23,27 +36,32 @@
 
         &__character {
             color: white;
+            font-size: calc(var(--box-inner-height) - 20px);
         }
     }
 
     &__pointer {
+        --border-width: 2vw;
         position: absolute;
         top: 50%;
         width: 0;
         height: 0;
-        border-left: 20px solid transparent;
-        border-right: 20px solid transparent;
-        border-top: 20px solid white;
+        border-left: var(--border-width) solid transparent;
+        border-right: var(--border-width) solid transparent;
+        border-top: var(--border-width) solid white;
+        transform: translate(calc(var(--position) * var(--box-width) - var(--box-width)/4 + 5px), calc(-3 * var(--box-height) / 4));
         transition: all  ease-in-out 0.3s;
     }
 
     &__square {
+        --border-width: calc(var(--box-inner-height) * 0.05);
         position: absolute;
-        top: calc(50% + 12px);
-        width: 110px;
-        height: 110px;
-        border: 10px solid white;
+        top: calc(50% + var(--border-width));
+        width: calc(var(--box-inner-width) * 0.9);
+        height: calc(var(--box-inner-height) * 0.9);
+        border: var(--border-width) solid white;
         border-radius: 10%;
-        transition: all  ease-in-out 0.3s;
+        transform: translate(calc(var(--position) * var(--box-width) - var(--box-width)/2 + var(--border-width)), calc(-1 * var(--box-height) / 2 + var(--border-width)));
+        transition: all ease-in-out 0.3s;
     }
 }
