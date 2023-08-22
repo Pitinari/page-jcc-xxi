@@ -194,7 +194,7 @@ function App() {
           </Section>
           <Section ref={cronogramaRef}>
             <LeftTitle>Cronograma</LeftTitle>
-            <Day number={1} date="5 de Octubre">
+{/*             <Day number={1} date="5 de Octubre">
               <Event time="12:15" title="Almuerzo" gray={true} />
               <Event time="12:45" title="Acto de apertura" />
               <Event time="13:00" title="Historia LCC y JCC" speakers="Mauro Jaskelioff y Raúl Kantor">
@@ -211,34 +211,34 @@ function App() {
                 <br />• Clase de Strings: Hashing, Z Algorithm, KMP. Luego de esta clase van a estar en condiciones de atacar (por ejemplo) el problema de contar
                 la cantidad de subcadenas que sean palíndromo en una cadena de caracteres dada: click aqui El taller se realiza en el Laboratorio 1er piso
               </Event>
-            </Day>
+            </Day> */}
           </Section>
           <Section ref={actividadesRef}>
             <LeftTitle>Actividades</LeftTitle>
-            <Day number={1} date="5 de Octubre">
+{/*             <Day number={1} date="5 de Octubre">
               <Event time="20:00" title="Fútbol Mixto">
                 Vuelve el clásico futbol 5 de la LCC Ubicación: Instituto Politécnico Superior Gral. San Martín
               </Event>
-            </Day>
+            </Day> */}
           </Section>
           <Section ref={apoyoRef}>
             <CenterTitle>Patrocinadores</CenterTitle>
-            <Grid3>
+{/*             <Grid3>
               <span>DeepAgro</span>
               <span>Grupo San Cristóbal</span>
               <span>Santa Fe</span>
               <span>NeuralSoft</span>
               <span>Trail of Bits</span>
               <span>Paddle</span>
-            </Grid3>
+            </Grid3> */}
           </Section>
           <Section>
             <CenterTitle>Auspiciantes</CenterTitle>
-            <Grid3>
+{/*             <Grid3>
               <span>Conicet</span>
               <span>FCEIA</span>
               <span>UNR</span>
-            </Grid3>
+            </Grid3> */}
           </Section>
         </main>
         <footer className="flex flex-col items-center justify-center gap-5 p-5 text-xs text-center text-gray-800 bg-white border-t md:gap-7 md:p-7 md:text-base">
