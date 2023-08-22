@@ -158,7 +158,7 @@ function App() {
           <Section>
             <CenterTitle>Jornadas de Ciencias de la Computación</CenterTitle>
             <Text>
-              Las Jornadas de Ciencias de la Computación vuelven los días 5, 6 y 7 de Octubre. Contaremos con la presencia de destacados expositores de distintas
+              Las Jornadas de Ciencias de la Computación vuelven los días 4, 5 y 6 de Octubre. Contaremos con la presencia de destacados expositores de distintas
               localidades argentinas, que están radicados en diferentes partes del mundo. Las charlas se realizarán en el salón de actos de la Facultad de
               Ciencias Exactas, Ingeniería y Agrimensura, además de actividades y talleres abiertos para todos los asistentes. También estaremos difundiendo más
               información en la cuenta de Instagram de las JCC.
