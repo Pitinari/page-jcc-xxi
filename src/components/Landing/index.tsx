@@ -18,7 +18,7 @@ export const Landing: React.FC<LandingProps> = ({ className }) => {
         // We do this so that the linter doesn't complain
         // about using "current" in the destructor, which may change
         const currentIntervals = intervals.current;
-
+        
         if (!started) {
             currentIntervals.forEach((_, idx) => {
                 currentIntervals[idx] = setInterval(() => {
@@ -28,7 +28,7 @@ export const Landing: React.FC<LandingProps> = ({ className }) => {
             setStarted(true);
         }
         return () => currentIntervals.forEach(clearInterval);
-    }, [started]);
+    }, []);
 
     useEffect(() => {
         if (pointerPos === -1) {
