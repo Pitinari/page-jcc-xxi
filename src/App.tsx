@@ -1,7 +1,8 @@
-import { PropsWithChildren, forwardRef, useRef } from 'react';
-import './App.css'
-import { Landing } from './components/Landing'
-import { useAccordion } from './useAccordion';
+import { PropsWithChildren, forwardRef, useRef } from "react";
+import "./App.css";
+import { Landing } from "./components/Landing";
+import { useAccordion } from "./useAccordion";
+import { BiChevronDown, BiLogoInstagram, BiLogoYoutube, BiMailSend, BiSolidMap, BiSolidPhone } from "react-icons/bi";
 
 function Nav({ children }: PropsWithChildren) {
   return (
@@ -16,7 +17,9 @@ function MobileNav({ children }: PropsWithChildren) {
 
   return (
     <>
-      <button className="md:hidden" onClick={toggle}>{maxHeight === "0px" ? "↓" : "↑"}</button>
+      <button className={`text-2xl md:hidden transition-transform ${maxHeight !== "0px" ? "rotate-180" : ""}`} onClick={toggle}>
+        <BiChevronDown />
+      </button>
       <nav ref={ref} className="w-full overflow-hidden duration-300 ease-in-out md:hidden transition-max-height" style={{ maxHeight }}>
         <ul className="flex flex-col gap-5 p-5">{children}</ul>
       </nav>
@@ -33,15 +36,23 @@ function LeftTitle({ children }: PropsWithChildren) {
 }
 
 const Section = forwardRef<HTMLDivElement, PropsWithChildren>(({ children }, ref) => {
-  return <section ref={ref} className="flex flex-col items-center justify-center gap-10 p-5 rounded shadow-lg md:p-10 scroll-m-16">{children}</section>;
+  return (
+    <section ref={ref} className="flex flex-col items-center justify-center gap-10 p-5 rounded shadow-lg md:p-10 scroll-m-16">
+      {children}
+    </section>
+  );
 });
 
 function Text({ children }: PropsWithChildren) {
   return <p className="font-light leading-relaxed text-justify md:text-center md:text-xl">{children}</p>;
 }
 
-function Link({ children }: PropsWithChildren) {
-  return <span className="p-3 border border-black rounded-full md:p-5">{children}</span>;
+function Link({ url, children }: PropsWithChildren<{ url?: string }>) {
+  return (
+    <a className="appearance-none cursor-pointer" href={url} target="_blank">
+      {children}
+    </a>
+  );
 }
 
 function Grid3({ children }: PropsWithChildren) {
@@ -64,8 +75,9 @@ function Event({ time, title, speakers, gray, children }: PropsWithChildren<{ ti
 
   return (
     <div className="text-xs border-t md:text-left first:rounded-t last:rounded-b border-x last:border-b md:text-base">
-
-      <div className={`${gray ? "bg-gray-100" : "bg-white"} p-3 md:p-5 gap-3 flex flex-wrap items-center justify-between ${children ? "cursor-pointer" : ""}`} onClick={toggle}>
+      <div
+        className={`${gray ? "bg-gray-100" : "bg-white"} p-3 md:p-5 gap-3 flex flex-wrap items-center justify-between ${children ? "cursor-pointer" : ""}`}
+        onClick={toggle}>
         <span>{title}</span>
         <span>{time}</span>
         {speakers && <p className="w-full font-light text-left text-gray-600 md:text-sm">{speakers}</p>}
@@ -78,7 +90,6 @@ function Event({ time, title, speakers, gray, children }: PropsWithChildren<{ ti
           </div>
         </div>
       )}
-
     </div>
   );
 }
@@ -88,7 +99,22 @@ function Title({ children }: PropsWithChildren) {
 }
 
 function NavItem({ children, scroll }: PropsWithChildren<{ scroll: () => void }>) {
-  return <li className="list-none transition-colors cursor-pointer hover:text-red-800" onClick={scroll}>{children}</li>;
+  return (
+    <li className="list-none transition-colors cursor-pointer hover:text-red-800" onClick={scroll}>
+      {children}
+    </li>
+  );
+}
+
+function FooterInfoRight({ children, Icon }: PropsWithChildren<{ Icon: React.ReactNode }>) {
+  return (
+    <span className="flex items-center justify-end gap-3">
+      {children}
+      <span className="text-xl md:text-2xl">
+        {Icon}
+      </span>
+    </span>
+  );
 }
 
 function App() {
@@ -132,35 +158,43 @@ function App() {
           <Section>
             <CenterTitle>Jornadas de Ciencias de la Computación</CenterTitle>
             <Text>
-              Las Jornadas de Ciencias de la Computación vuelven los días 5, 6 y 7 de Octubre. Contaremos con la presencia de destacados expositores de
-              distintas localidades argentinas, que están radicados en diferentes partes del mundo. Las charlas se realizarán en el salón de actos de la
-              Facultad de Ciencias Exactas, Ingeniería y Agrimensura, además de actividades y talleres abiertos para todos los asistentes. También estaremos
-              difundiendo más información en la cuenta de Instagram de las JCC.
+              Las Jornadas de Ciencias de la Computación vuelven los días 4, 5 y 6 de Octubre. Contaremos con la presencia de destacados expositores de distintas
+              localidades argentinas, que están radicados en diferentes partes del mundo. Las charlas se realizarán en el salón de actos de la Facultad de
+              Ciencias Exactas, Ingeniería y Agrimensura, además de actividades y talleres abiertos para todos los asistentes. También estaremos difundiendo más
+              información en la cuenta de Instagram de las JCC.
             </Text>
-            <div className="flex items-center gap-10 text-2xl md:text-4xl">
-              <Link>YT</Link>
-              <Link>IG</Link>
+            <div className="flex items-center gap-20 text-4xl md:text-6xl">
+              <span className="transition-colors hover:text-red-500">
+                <Link url="https://www.youtube.com/channel/UC-CReVEx4-3AfJOH1Tr-udw">
+                  <BiLogoYoutube />
+                </Link>
+              </span>
+              <span className="transition-colors hover:text-pink-700">
+                <Link url="https://www.instagram.com/jccfceia">
+                  <BiLogoInstagram />
+                </Link>
+              </span>
             </div>
           </Section>
           <Section ref={infoRef}>
             <CenterTitle>Sobre las Jornadas</CenterTitle>
             <Text>
               Las Jornadas de Ciencias de la Computación son una iniciativa del Departamento de Ciencias de la Computación de la Facultad de Ciencias Exactas,
-              Ingeniería y Agrimensura de la Universidad Nacional de Rosario, de carácter abierto y gratuito. El objetivo de las mismas es promover el contacto
-              de los alumnos de la Facultad con investigadores y profesionales en temas relacionados con el ámbito de las ciencias de la computación. Al mismo
+              Ingeniería y Agrimensura de la Universidad Nacional de Rosario, de carácter abierto y gratuito. El objetivo de las mismas es promover el contacto de
+              los alumnos de la Facultad con investigadores y profesionales en temas relacionados con el ámbito de las ciencias de la computación. Al mismo
               tiempo, nos permite mantenernos actualizados sobre las tendencias en investigación y desarrollo de la región.
             </Text>
             <Text>
               Las JCC se llevaron a cabo por primera vez en noviembre del año 2000. Año tras año han participado decenas de personas provenientes de empresas de
               desarrollo de software local, estudiantes e investigadores de esta casa de estudios y de universidades destacadas de la zona, entre las cuales
-              podemos mencionar a la Universidad Nacional de La Plata, la Universidad de Buenos Aires, la Universidad Nacional de Córdoba, la Universidad
-              Nacional de Río Cuarto y la Universidad de la República (Montevideo-Uruguay). La realización de las JCC es un proceso que continúa año a año y
-              constituye un logro significativo del cuerpo docente y estudiantil de la carrera Licenciatura en Ciencias de la Computación.
+              podemos mencionar a la Universidad Nacional de La Plata, la Universidad de Buenos Aires, la Universidad Nacional de Córdoba, la Universidad Nacional
+              de Río Cuarto y la Universidad de la República (Montevideo-Uruguay). La realización de las JCC es un proceso que continúa año a año y constituye un
+              logro significativo del cuerpo docente y estudiantil de la carrera Licenciatura en Ciencias de la Computación.
             </Text>
           </Section>
           <Section ref={cronogramaRef}>
             <LeftTitle>Cronograma</LeftTitle>
-            <Day number={1} date="5 de Octubre">
+{/*             <Day number={1} date="5 de Octubre">
               <Event time="12:15" title="Almuerzo" gray={true} />
               <Event time="12:45" title="Acto de apertura" />
               <Event time="13:00" title="Historia LCC y JCC" speakers="Mauro Jaskelioff y Raúl Kantor">
@@ -172,57 +206,76 @@ function App() {
               <Event time="09:00" title="Taller de Programación Competitiva" speakers="Mariano Crosetti, Sebastián Mestre y Franco de Rico">
                 Vamos a dar dos clases muy entretenidas de algoritmia y estructuras de datos:
                 <br />
-                • Clase de Grafos: DFS, BFS, Algoritmo de Tarjan para encontrar las componentes fuertemente conexas en un grafo dirigido. Luego de esta clase
-                van a estar en condiciones de atacar el problema H del Torneo Argentino de Programación 2022: click aqui
-                <br />• Clase de Strings: Hashing, Z Algorithm, KMP. Luego de esta clase van a estar en condiciones de atacar (por ejemplo) el problema de
-                contar la cantidad de subcadenas que sean palíndromo en una cadena de caracteres dada: click aqui El taller se realiza en el Laboratorio 1er
-                piso
+                • Clase de Grafos: DFS, BFS, Algoritmo de Tarjan para encontrar las componentes fuertemente conexas en un grafo dirigido. Luego de esta clase van
+                a estar en condiciones de atacar el problema H del Torneo Argentino de Programación 2022: click aqui
+                <br />• Clase de Strings: Hashing, Z Algorithm, KMP. Luego de esta clase van a estar en condiciones de atacar (por ejemplo) el problema de contar
+                la cantidad de subcadenas que sean palíndromo en una cadena de caracteres dada: click aqui El taller se realiza en el Laboratorio 1er piso
               </Event>
-            </Day>
+            </Day> */}
           </Section>
           <Section ref={actividadesRef}>
             <LeftTitle>Actividades</LeftTitle>
-            <Day number={1} date="5 de Octubre">
+{/*             <Day number={1} date="5 de Octubre">
               <Event time="20:00" title="Fútbol Mixto">
                 Vuelve el clásico futbol 5 de la LCC Ubicación: Instituto Politécnico Superior Gral. San Martín
               </Event>
-            </Day>
+            </Day> */}
           </Section>
           <Section ref={apoyoRef}>
             <CenterTitle>Patrocinadores</CenterTitle>
-            <Grid3>
+{/*             <Grid3>
               <span>DeepAgro</span>
               <span>Grupo San Cristóbal</span>
               <span>Santa Fe</span>
               <span>NeuralSoft</span>
               <span>Trail of Bits</span>
               <span>Paddle</span>
-            </Grid3>
+            </Grid3> */}
           </Section>
           <Section>
             <CenterTitle>Auspiciantes</CenterTitle>
-            <Grid3>
+{/*             <Grid3>
               <span>Conicet</span>
               <span>FCEIA</span>
               <span>UNR</span>
-            </Grid3>
+            </Grid3> */}
           </Section>
         </main>
-        <footer className="flex flex-col items-center justify-center gap-3 p-3 text-xs text-center text-gray-800 bg-white border-t md:gap-5 md:p-5 md:text-base">
-          <div className="flex flex-col items-start justify-between w-full gap-3 text-left md:items-center md:flex-row">
-            <div className="md:text-left">
-              Licenciatura en Ciencias de la Computación <br />
-              Facultad de Ciencias Exactas, <br />
-              Ingeniería y Agrimensura Universidad Nacional de Rosario
+        <footer className="flex flex-col items-center justify-center gap-5 p-5 text-xs text-center text-gray-800 bg-white border-t md:gap-7 md:p-7 md:text-base">
+          <div className="flex flex-col items-center justify-between w-full gap-5 md:flex-row">
+            <img className="w-32" src="/logo-footer.png" alt="Logo" />
+            <div className="flex flex-col items-center flex-grow gap-3 md:items-start">
+              <span>Licenciatura en Ciencias de la Computación</span>
+              <span>Facultad de Ciencias Exactas, Ingeniería y Agrimensura</span>
+              <span>Universidad Nacional de Rosario</span>
             </div>
-            <div className="md:text-right">
-              Pellegrini 250, Rosario, Santa Fe, Argentina <br />
-              (0341) 480-2649/60 <br />
-              jcc@fceia.unr.edu.ar
+            <div className="flex flex-col items-center gap-3 md:items-end">
+              <FooterInfoRight Icon={<BiSolidMap />}>
+                Pellegrini 250, Rosario, Santa Fe, Argentina
+              </FooterInfoRight>
+              <FooterInfoRight Icon={<BiSolidPhone />}>
+                (0341) 480-2649/60
+              </FooterInfoRight>
+              <FooterInfoRight Icon={<BiMailSend />}>
+                jcc@fceia.unr.edu.ar
+              </FooterInfoRight>
             </div>
           </div>
-          <div className="w-full pt-5 border-t">
-            Otras ediciones - 2005 - 2006 - 2007 - 2008 - 2009 - 2010 - 2011 - 2012 - 2013 - 2014 - 2015 - 2016 - 2017 - 2018 - 2019 - 2020 - 2021 - 2023
+          <div className="w-full pt-5 font-bold border-t">
+            Otras ediciones
+            {Array.from({ length: new Date().getFullYear() - 2005 + 1 }, (_, i) => 2005 + i).map(
+              year =>
+                year !== 2023 && (
+                  <>
+                    {" - "}
+                    <span className="underline transition-colors cursor-pointer hover:text-red-800">
+                      <Link key={year} url={`https://jcc.dcc.fceia.unr.edu.ar/${year}`}>
+                        {year}
+                      </Link>
+                    </span>
+                  </>
+                )
+            )}
           </div>
         </footer>
       </>
