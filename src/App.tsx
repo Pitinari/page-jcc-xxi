@@ -55,7 +55,7 @@ function Link({ url, children }: PropsWithChildren<{ url?: string }>) {
   );
 }
 
-function Grid3({ children }: PropsWithChildren) {
+/* function Grid3({ children }: PropsWithChildren) {
   return <div className="grid content-center w-full grid-cols-1 gap-10 md:grid-cols-3 justify-items-center">{children}</div>;
 }
 
@@ -92,7 +92,7 @@ function Event({ time, title, speakers, gray, children }: PropsWithChildren<{ ti
       )}
     </div>
   );
-}
+} */
 
 function Title({ children }: PropsWithChildren) {
   return <h1 className="text-2xl md:text-4xl">{children}</h1>;
