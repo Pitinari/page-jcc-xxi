@@ -28,7 +28,7 @@ export const Landing: React.FC<LandingProps> = ({ className }) => {
             setStarted(true);
         }
         return () => currentIntervals.forEach(clearInterval);
-    }, []);
+    }, [started]);
 
     useEffect(() => {
         if (pointerPos === -1) {
@@ -40,7 +40,7 @@ export const Landing: React.FC<LandingProps> = ({ className }) => {
                 clearTimeout(pointerTimeout);
             }
         }
-    }, []);
+    }, [pointerPos]);
 
     return (
         <div className={classNames(className, "landing", "relative h-full w-full")}>
