@@ -196,7 +196,7 @@ function App() {
   // ! Not working. A possible solution is to attach a ref to
   // ! the Landing component and use that to scroll to the top
   const scrollToTop = () => {
-    window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
+    pageRef.current?.scrollTo({ top: 0, left: 0, behavior: "smooth" });
   };
 
   useEffect(() => {
