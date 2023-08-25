@@ -17,6 +17,7 @@ import {
   BiSolidPhone,
 } from "react-icons/bi";
 import classNames from "classnames";
+import logo from "../images/logo-footer.png";
 
 function Nav({ children }: PropsWithChildren) {
   return (
@@ -341,7 +342,7 @@ function App() {
       </main>
       <footer className="flex flex-col items-center justify-center gap-5 p-5 text-xs text-center text-gray-800 bg-white border-t md:gap-7 md:p-7 md:text-base">
         <div className="flex flex-col items-center justify-between w-full gap-5 md:flex-row">
-          <img className="w-32" src="/logo-footer.png" alt="Logo" />
+          <img className="w-32" src={logo} alt="Logo" />
           <div className="flex flex-col items-center flex-grow gap-3 md:items-start">
             <span>Licenciatura en Ciencias de la Computación</span>
             <span>Facultad de Ciencias Exactas, Ingeniería y Agrimensura</span>
