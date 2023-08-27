@@ -7,7 +7,7 @@ function replaceCharacter(idx: number, newChar: string) {
     document.getElementById(`char__${idx}`)!.replaceChildren(newChar);
 }
 
-export const Landing: React.FC<LandingProps> = ({ className }) => {
+export const Landing: React.FC<LandingProps> = ({ className, onAnimationEnds }) => {
 
     const intervals = useRef(Array(9).fill(0));
     const [started, setStarted] = useState(false);
@@ -61,7 +61,10 @@ export const Landing: React.FC<LandingProps> = ({ className }) => {
                                 }
                             }
                             setPointerPos(prev => Math.min(9, prev + 1))
-                        } else setPointerPos(10)
+                        } else {
+                            setPointerPos(10);
+                            onAnimationEnds?.();
+                        }
                     }} points={pointerPos} />
                     <Square points={pointerPos}/>
                 </>

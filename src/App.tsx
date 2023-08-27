@@ -33,9 +33,8 @@ function MobileNav({ children }: PropsWithChildren) {
   return (
     <>
       <button
-        className={`text-2xl md:hidden transition-transform ${
-          maxHeight !== "0px" ? "rotate-180" : ""
-        }`}
+        className={`text-2xl md:hidden transition-transform ${maxHeight !== "0px" ? "rotate-180" : ""
+          }`}
         onClick={toggle}
       >
         <BiChevronDown />
@@ -237,7 +236,12 @@ function App() {
           <NavItem scroll={() => scrollTo(apoyoRef)}>Apoyo</NavItem>
         </MobileNav>
       </header>
-      <Landing className="h-full pt-[4rem]" />
+      <Landing className="h-full pt-[4rem]" onAnimationEnds={() => {
+        if(!showHeader) {
+          setShowHeader(true);
+          scrollTo(descRef);
+        }
+      }} />
       <main className="flex flex-col max-w-screen-lg gap-5 py-5 m-auto text-center text-gray-800">
         <Section ref={descRef}>
           <CenterTitle>Jornadas de Ciencias de la Computación</CenterTitle>
