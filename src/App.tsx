@@ -27,7 +27,7 @@ function Nav({ children }: PropsWithChildren) {
   );
 }
 
-function MobileNav({ children }: PropsWithChildren) {
+function MobileNav({ children, showHeader }: PropsWithChildren<{ showHeader: boolean }>) {
   const [ref, maxHeight, toggle] = useAccordion();
 
   return (
@@ -41,10 +41,10 @@ function MobileNav({ children }: PropsWithChildren) {
       </button>
       <nav
         ref={ref}
+        style={{ maxHeight: !showHeader ? 0 : maxHeight }}
         className="w-full overflow-hidden duration-300 ease-in-out md:hidden transition-max-height"
-        style={{ maxHeight }}
       >
-        <ul className="flex flex-col gap-5 p-5">{children}</ul>
+        <ul onClick={toggle} className="flex flex-col gap-5 p-5">{children}</ul>
       </nav>
     </>
   );
@@ -188,9 +188,10 @@ function App() {
   const actividadesRef = useRef<HTMLDivElement>(null);
   const apoyoRef = useRef<HTMLDivElement>(null);
   const [showHeader, setShowHeader] = useState<boolean>(false);
+  
 
   const scrollTo = (ref: React.RefObject<HTMLDivElement>) => {
-    if (ref.current) ref.current.scrollIntoView({ behavior: "smooth" });
+    pageRef.current?.scroll({ top: (ref.current?.offsetTop ?? 0) - 64 , behavior: "smooth" });
   };
 
   // ! Not working. A possible solution is to attach a ref to
@@ -213,91 +214,92 @@ function App() {
   }, [showHeader]);
 
   return (
-    <div ref={pageRef} className="w-full h-full overflow-auto">
-      <header
-        className={classNames(
-          "fixed w-full top-0 z-30 flex flex-wrap items-center justify-between text-gray-800 bg-white shadow min-h-[4rem] md:justify-start md:text-xl md:gap-7 px-7 py-5 duration-300 ease-in-out",
-          !showHeader && "-translate-y-full h-0"
-        )}
-      >
-        <Title>
-          <NavItem scroll={() => scrollToTop()}>JCC 2023</NavItem>
-        </Title>
-        <Nav>
-          <NavItem scroll={() => scrollTo(infoRef)}>Info</NavItem>
-          <NavItem scroll={() => scrollTo(cronogramaRef)}>Cronograma</NavItem>
-          <NavItem scroll={() => scrollTo(actividadesRef)}>Actividades</NavItem>
-          <NavItem scroll={() => scrollTo(apoyoRef)}>Apoyo</NavItem>
-        </Nav>
-        <MobileNav>
-          <NavItem scroll={() => scrollTo(infoRef)}>Info</NavItem>
-          <NavItem scroll={() => scrollTo(cronogramaRef)}>Cronograma</NavItem>
-          <NavItem scroll={() => scrollTo(actividadesRef)}>Actividades</NavItem>
-          <NavItem scroll={() => scrollTo(apoyoRef)}>Apoyo</NavItem>
-        </MobileNav>
-      </header>
-      <Landing className="h-full pt-[4rem]" onAnimationEnds={() => {
-        if(!showHeader) {
-          setShowHeader(true);
-          scrollTo(descRef);
-        }
-      }} />
-      <main className="flex flex-col max-w-screen-lg gap-5 py-5 m-auto text-center text-gray-800">
-        <Section ref={descRef}>
-          <CenterTitle>Jornadas de Ciencias de la Computación</CenterTitle>
-          <Text>
-            Las Jornadas de Ciencias de la Computación vuelven los días 4, 5 y 6
-            de Octubre. Contaremos con la presencia de destacados expositores de
-            distintas localidades argentinas, que están radicados en diferentes
-            partes del mundo. Las charlas se realizarán en el salón de actos de
-            la Facultad de Ciencias Exactas, Ingeniería y Agrimensura, además de
-            actividades y talleres abiertos para todos los asistentes. También
-            estaremos difundiendo más información en la cuenta de Instagram de
-            las JCC.
-          </Text>
-          <div className="flex items-center gap-20 text-4xl md:text-6xl">
-            <span className="transition-colors hover:text-red-500">
-              <Link url="https://www.youtube.com/channel/UC-CReVEx4-3AfJOH1Tr-udw">
-                <BiLogoYoutube />
-              </Link>
-            </span>
-            <span className="transition-colors hover:text-pink-700">
-              <Link url="https://www.instagram.com/jccfceia">
-                <BiLogoInstagram />
-              </Link>
-            </span>
-          </div>
-        </Section>
-        <Section ref={infoRef}>
-          <CenterTitle>Sobre las Jornadas</CenterTitle>
-          <Text>
-            Las Jornadas de Ciencias de la Computación son una iniciativa del
-            Departamento de Ciencias de la Computación de la Facultad de
-            Ciencias Exactas, Ingeniería y Agrimensura de la Universidad
-            Nacional de Rosario, de carácter abierto y gratuito. El objetivo de
-            las mismas es promover el contacto de los alumnos de la Facultad con
-            investigadores y profesionales en temas relacionados con el ámbito
-            de las ciencias de la computación. Al mismo tiempo, nos permite
-            mantenernos actualizados sobre las tendencias en investigación y
-            desarrollo de la región.
-          </Text>
-          <Text>
-            Las JCC se llevaron a cabo por primera vez en noviembre del año
-            2000. Año tras año han participado decenas de personas provenientes
-            de empresas de desarrollo de software local, estudiantes e
-            investigadores de esta casa de estudios y de universidades
-            destacadas de la zona, entre las cuales podemos mencionar a la
-            Universidad Nacional de La Plata, la Universidad de Buenos Aires, la
-            Universidad Nacional de Córdoba, la Universidad Nacional de Río
-            Cuarto y la Universidad de la República (Montevideo-Uruguay). La
-            realización de las JCC es un proceso que continúa año a año y
-            constituye un logro significativo del cuerpo docente y estudiantil
-            de la carrera Licenciatura en Ciencias de la Computación.
-          </Text>
-        </Section>
-        <Section ref={cronogramaRef}>
-          <LeftTitle>Cronograma</LeftTitle>
-          {/*             <Day number={1} date="5 de Octubre">
+    <div className="w-full h-full relative overflow-hidden">
+      <div ref={pageRef} className="w-full h-full overflow-scroll">
+        <header
+          className={classNames(
+            "fixed w-full top-0 z-30 flex flex-wrap items-center justify-between text-gray-800 bg-white shadow min-h-[4rem] md:justify-start md:text-xl md:gap-7 px-7 py-5 duration-300 ease-in-out",
+            !showHeader && "-translate-y-full"
+          )}
+        >
+          <Title>
+            <NavItem scroll={() => scrollToTop()}>JCC 2023</NavItem>
+          </Title>
+          <Nav>
+            <NavItem scroll={() => scrollTo(infoRef)}>Info</NavItem>
+            <NavItem scroll={() => scrollTo(cronogramaRef)}>Cronograma</NavItem>
+            <NavItem scroll={() => scrollTo(actividadesRef)}>Actividades</NavItem>
+            <NavItem scroll={() => scrollTo(apoyoRef)}>Apoyo</NavItem>
+          </Nav>
+          <MobileNav showHeader={showHeader} >
+            <NavItem scroll={() => scrollTo(infoRef)}>Info</NavItem>
+            <NavItem scroll={() => scrollTo(cronogramaRef)}>Cronograma</NavItem>
+            <NavItem scroll={() => scrollTo(actividadesRef)}>Actividades</NavItem>
+            <NavItem scroll={() => scrollTo(apoyoRef)}>Apoyo</NavItem>
+          </MobileNav>
+        </header>
+        <Landing className="h-full pt-[4rem]" onAnimationEnds={() => {
+          if (!showHeader) {
+            setShowHeader(true);
+            scrollTo(descRef);
+          }
+        }} />
+        <main className="flex flex-col max-w-screen-lg gap-5 py-5 m-auto text-center text-gray-800">
+          <Section ref={descRef}>
+            <CenterTitle>Jornadas de Ciencias de la Computación</CenterTitle>
+            <Text>
+              Las Jornadas de Ciencias de la Computación vuelven los días 4, 5 y 6
+              de Octubre. Contaremos con la presencia de destacados expositores de
+              distintas localidades argentinas, que están radicados en diferentes
+              partes del mundo. Las charlas se realizarán en el salón de actos de
+              la Facultad de Ciencias Exactas, Ingeniería y Agrimensura, además de
+              actividades y talleres abiertos para todos los asistentes. También
+              estaremos difundiendo más información en la cuenta de Instagram de
+              las JCC.
+            </Text>
+            <div className="flex items-center gap-20 text-4xl md:text-6xl">
+              <span className="transition-colors hover:text-red-500">
+                <Link url="https://www.youtube.com/channel/UC-CReVEx4-3AfJOH1Tr-udw">
+                  <BiLogoYoutube />
+                </Link>
+              </span>
+              <span className="transition-colors hover:text-pink-700">
+                <Link url="https://www.instagram.com/jccfceia">
+                  <BiLogoInstagram />
+                </Link>
+              </span>
+            </div>
+          </Section>
+          <Section ref={infoRef}>
+            <CenterTitle>Sobre las Jornadas</CenterTitle>
+            <Text>
+              Las Jornadas de Ciencias de la Computación son una iniciativa del
+              Departamento de Ciencias de la Computación de la Facultad de
+              Ciencias Exactas, Ingeniería y Agrimensura de la Universidad
+              Nacional de Rosario, de carácter abierto y gratuito. El objetivo de
+              las mismas es promover el contacto de los alumnos de la Facultad con
+              investigadores y profesionales en temas relacionados con el ámbito
+              de las ciencias de la computación. Al mismo tiempo, nos permite
+              mantenernos actualizados sobre las tendencias en investigación y
+              desarrollo de la región.
+            </Text>
+            <Text>
+              Las JCC se llevaron a cabo por primera vez en noviembre del año
+              2000. Año tras año han participado decenas de personas provenientes
+              de empresas de desarrollo de software local, estudiantes e
+              investigadores de esta casa de estudios y de universidades
+              destacadas de la zona, entre las cuales podemos mencionar a la
+              Universidad Nacional de La Plata, la Universidad de Buenos Aires, la
+              Universidad Nacional de Córdoba, la Universidad Nacional de Río
+              Cuarto y la Universidad de la República (Montevideo-Uruguay). La
+              realización de las JCC es un proceso que continúa año a año y
+              constituye un logro significativo del cuerpo docente y estudiantil
+              de la carrera Licenciatura en Ciencias de la Computación.
+            </Text>
+          </Section>
+          <Section ref={cronogramaRef}>
+            <LeftTitle>Cronograma</LeftTitle>
+            {/*             <Day number={1} date="5 de Octubre">
               <Event time="12:15" title="Almuerzo" gray={true} />
               <Event time="12:45" title="Acto de apertura" />
               <Event time="13:00" title="Historia LCC y JCC" speakers="Mauro Jaskelioff y Raúl Kantor">
@@ -315,18 +317,18 @@ function App() {
                 la cantidad de subcadenas que sean palíndromo en una cadena de caracteres dada: click aqui El taller se realiza en el Laboratorio 1er piso
               </Event>
             </Day> */}
-        </Section>
-        <Section ref={actividadesRef}>
-          <LeftTitle>Actividades</LeftTitle>
-          {/*             <Day number={1} date="5 de Octubre">
+          </Section>
+          <Section ref={actividadesRef}>
+            <LeftTitle>Actividades</LeftTitle>
+            {/*             <Day number={1} date="5 de Octubre">
               <Event time="20:00" title="Fútbol Mixto">
                 Vuelve el clásico futbol 5 de la LCC Ubicación: Instituto Politécnico Superior Gral. San Martín
               </Event>
             </Day> */}
-        </Section>
-        <Section ref={apoyoRef}>
-          <CenterTitle>Patrocinadores</CenterTitle>
-          {/*             <Grid3>
+          </Section>
+          <Section ref={apoyoRef}>
+            <CenterTitle>Patrocinadores</CenterTitle>
+            {/*             <Grid3>
               <span>DeepAgro</span>
               <span>Grupo San Cristóbal</span>
               <span>Santa Fe</span>
@@ -334,59 +336,60 @@ function App() {
               <span>Trail of Bits</span>
               <span>Paddle</span>
             </Grid3> */}
-        </Section>
-        <Section>
-          <CenterTitle>Auspiciantes</CenterTitle>
-          {/*             <Grid3>
+          </Section>
+          <Section>
+            <CenterTitle>Auspiciantes</CenterTitle>
+            {/*             <Grid3>
               <span>Conicet</span>
               <span>FCEIA</span>
               <span>UNR</span>
             </Grid3> */}
-        </Section>
-      </main>
-      <footer className="flex flex-col items-center justify-center gap-5 p-5 text-xs text-center text-gray-800 bg-white border-t md:gap-7 md:p-7 md:text-base">
-        <div className="flex flex-col items-center justify-between w-full gap-5 md:flex-row">
-          <img className="w-32" src={logo} alt="Logo" />
-          <div className="flex flex-col items-center flex-grow gap-3 md:items-start">
-            <span>Licenciatura en Ciencias de la Computación</span>
-            <span>Facultad de Ciencias Exactas, Ingeniería y Agrimensura</span>
-            <span>Universidad Nacional de Rosario</span>
+          </Section>
+        </main>
+        <footer className="flex flex-col items-center justify-center gap-5 p-5 text-xs text-center text-gray-800 bg-white border-t md:gap-7 md:p-7 md:text-base">
+          <div className="flex flex-col items-center justify-between w-full gap-5 md:flex-row">
+            <img className="w-32" src={logo} alt="Logo" />
+            <div className="flex flex-col items-center flex-grow gap-3 md:items-start">
+              <span>Licenciatura en Ciencias de la Computación</span>
+              <span>Facultad de Ciencias Exactas, Ingeniería y Agrimensura</span>
+              <span>Universidad Nacional de Rosario</span>
+            </div>
+            <div className="flex flex-col items-center gap-3 md:items-end">
+              <FooterInfoRight Icon={<BiSolidMap />}>
+                Pellegrini 250, Rosario, Santa Fe, Argentina
+              </FooterInfoRight>
+              <FooterInfoRight Icon={<BiSolidPhone />}>
+                (0341) 480-2649/60
+              </FooterInfoRight>
+              <FooterInfoRight Icon={<BiMailSend />}>
+                jcc@fceia.unr.edu.ar
+              </FooterInfoRight>
+            </div>
           </div>
-          <div className="flex flex-col items-center gap-3 md:items-end">
-            <FooterInfoRight Icon={<BiSolidMap />}>
-              Pellegrini 250, Rosario, Santa Fe, Argentina
-            </FooterInfoRight>
-            <FooterInfoRight Icon={<BiSolidPhone />}>
-              (0341) 480-2649/60
-            </FooterInfoRight>
-            <FooterInfoRight Icon={<BiMailSend />}>
-              jcc@fceia.unr.edu.ar
-            </FooterInfoRight>
+          <div className="w-full pt-5 font-bold border-t">
+            Otras ediciones
+            {Array.from(
+              { length: new Date().getFullYear() - 2005 + 1 },
+              (_, i) => 2005 + i
+            ).map(
+              (year) =>
+                year !== 2023 && (
+                  <>
+                    {" - "}
+                    <span className="underline transition-colors cursor-pointer hover:text-red-800">
+                      <Link
+                        key={year}
+                        url={`https://jcc.dcc.fceia.unr.edu.ar/${year}`}
+                      >
+                        {year}
+                      </Link>
+                    </span>
+                  </>
+                )
+            )}
           </div>
-        </div>
-        <div className="w-full pt-5 font-bold border-t">
-          Otras ediciones
-          {Array.from(
-            { length: new Date().getFullYear() - 2005 + 1 },
-            (_, i) => 2005 + i
-          ).map(
-            (year) =>
-              year !== 2023 && (
-                <>
-                  {" - "}
-                  <span className="underline transition-colors cursor-pointer hover:text-red-800">
-                    <Link
-                      key={year}
-                      url={`https://jcc.dcc.fceia.unr.edu.ar/${year}`}
-                    >
-                      {year}
-                    </Link>
-                  </span>
-                </>
-              )
-          )}
-        </div>
-      </footer>
+        </footer>
+      </div>
       <FloatingButton onClick={() => scrollTo(descRef)} show={!showHeader} />
     </div>
   );
