@@ -27,14 +27,18 @@ function Nav({ children }: PropsWithChildren) {
   );
 }
 
-function MobileNav({ children, showHeader }: PropsWithChildren<{ showHeader: boolean }>) {
+function MobileNav({
+  children,
+  showHeader,
+}: PropsWithChildren<{ showHeader: boolean }>) {
   const [ref, maxHeight, toggle] = useAccordion();
 
   return (
     <>
       <button
-        className={`text-2xl md:hidden transition-transform ${maxHeight !== "0px" ? "rotate-180" : ""
-          }`}
+        className={`text-2xl md:hidden transition-transform ${
+          maxHeight !== "0px" ? "rotate-180" : ""
+        }`}
         onClick={toggle}
       >
         <BiChevronDown />
@@ -44,7 +48,9 @@ function MobileNav({ children, showHeader }: PropsWithChildren<{ showHeader: boo
         style={{ maxHeight: !showHeader ? 0 : maxHeight }}
         className="w-full overflow-hidden duration-300 ease-in-out md:hidden transition-max-height"
       >
-        <ul onClick={toggle} className="flex flex-col gap-5 p-5">{children}</ul>
+        <ul onClick={toggle} className="flex flex-col gap-5 p-5">
+          {children}
+        </ul>
       </nav>
     </>
   );
@@ -89,11 +95,19 @@ function Link({ url, children }: PropsWithChildren<{ url?: string }>) {
   );
 }
 
-/* function Grid3({ children }: PropsWithChildren) {
-  return <div className="grid content-center w-full grid-cols-1 gap-10 md:grid-cols-3 justify-items-center">{children}</div>;
+function Grid3({ children }: PropsWithChildren) {
+  return (
+    <div className="grid content-center w-full grid-cols-1 gap-10 md:grid-cols-3 justify-items-center">
+      {children}
+    </div>
+  );
 }
 
-function Day({ number, date, children }: PropsWithChildren<{ number: number; date: string }>) {
+function Day({
+  number,
+  date,
+  children,
+}: PropsWithChildren<{ number: string; date: string }>) {
   return (
     <div className="w-full">
       <h2 className="p-3 md:p-5 md:text-2xl">
@@ -104,29 +118,55 @@ function Day({ number, date, children }: PropsWithChildren<{ number: number; dat
   );
 }
 
-function Event({ time, title, speakers, gray, children }: PropsWithChildren<{ time: string; title: string; speakers?: string; gray?: boolean }>) {
+function Event({
+  time,
+  title,
+  speakers,
+  gray,
+  children,
+}: PropsWithChildren<{
+  time: string;
+  title: string;
+  speakers?: string;
+  gray?: boolean;
+}>) {
   const [ref, maxHeight, toggle] = useAccordion();
 
   return (
     <div className="text-xs border-t md:text-left first:rounded-t last:rounded-b border-x last:border-b md:text-base">
       <div
-        className={`${gray ? "bg-gray-100" : "bg-white"} p-3 md:p-5 gap-3 flex flex-wrap items-center justify-between ${children ? "cursor-pointer" : ""}`}
-        onClick={toggle}>
+        className={`${
+          gray ? "bg-gray-100" : "bg-white"
+        } p-3 md:p-5 gap-3 flex flex-wrap items-center justify-between ${
+          children ? "cursor-pointer" : ""
+        }`}
+        onClick={toggle}
+      >
         <span>{title}</span>
         <span>{time}</span>
-        {speakers && <p className="w-full font-light text-left text-gray-600 md:text-sm">{speakers}</p>}
+        {speakers && (
+          <p className="w-full font-light text-left text-gray-600 md:text-sm">
+            {speakers}
+          </p>
+        )}
       </div>
 
       {children && (
-        <div className="overflow-hidden text-justify duration-300 ease-in-out transition-max-height md:text-left" style={{ maxHeight }}>
-          <div ref={ref} className="p-5 font-light text-blue-800 border-t bg-blue-50">
+        <div
+          className="overflow-hidden text-justify duration-300 ease-in-out transition-max-height md:text-left"
+          style={{ maxHeight }}
+        >
+          <div
+            ref={ref}
+            className="p-5 font-light text-blue-800 border-t bg-blue-50"
+          >
             {children}
           </div>
         </div>
       )}
     </div>
   );
-} */
+}
 
 function Title({ children }: PropsWithChildren) {
   return <h1 className="text-2xl md:text-4xl">{children}</h1>;
@@ -188,10 +228,12 @@ function App() {
   const actividadesRef = useRef<HTMLDivElement>(null);
   const apoyoRef = useRef<HTMLDivElement>(null);
   const [showHeader, setShowHeader] = useState<boolean>(false);
-  
 
   const scrollTo = (ref: React.RefObject<HTMLDivElement>) => {
-    pageRef.current?.scroll({ top: (ref.current?.offsetTop ?? 0) - 64 , behavior: "smooth" });
+    pageRef.current?.scroll({
+      top: (ref.current?.offsetTop ?? 0) - 64,
+      behavior: "smooth",
+    });
   };
 
   // ! Not working. A possible solution is to attach a ref to
@@ -215,7 +257,7 @@ function App() {
 
   return (
     <div className="w-full h-full relative overflow-hidden">
-      <div ref={pageRef} className="w-full h-full overflow-scroll">
+      <div ref={pageRef} className="w-full h-full overflow-y-scroll">
         <header
           className={classNames(
             "fixed w-full top-0 z-30 flex flex-wrap items-center justify-between text-gray-800 bg-white shadow min-h-[4rem] md:justify-start md:text-xl md:gap-7 px-7 py-5 duration-300 ease-in-out",
@@ -228,34 +270,41 @@ function App() {
           <Nav>
             <NavItem scroll={() => scrollTo(infoRef)}>Info</NavItem>
             <NavItem scroll={() => scrollTo(cronogramaRef)}>Cronograma</NavItem>
-            <NavItem scroll={() => scrollTo(actividadesRef)}>Actividades</NavItem>
+            <NavItem scroll={() => scrollTo(actividadesRef)}>
+              Actividades
+            </NavItem>
             <NavItem scroll={() => scrollTo(apoyoRef)}>Apoyo</NavItem>
           </Nav>
-          <MobileNav showHeader={showHeader} >
+          <MobileNav showHeader={showHeader}>
             <NavItem scroll={() => scrollTo(infoRef)}>Info</NavItem>
             <NavItem scroll={() => scrollTo(cronogramaRef)}>Cronograma</NavItem>
-            <NavItem scroll={() => scrollTo(actividadesRef)}>Actividades</NavItem>
+            <NavItem scroll={() => scrollTo(actividadesRef)}>
+              Actividades
+            </NavItem>
             <NavItem scroll={() => scrollTo(apoyoRef)}>Apoyo</NavItem>
           </MobileNav>
         </header>
-        <Landing className="h-full pt-[4rem]" onAnimationEnds={() => {
-          if (!showHeader) {
-            setShowHeader(true);
-            scrollTo(descRef);
-          }
-        }} />
+        <Landing
+          className="h-full pt-[4rem]"
+          onAnimationEnds={() => {
+            if (!showHeader) {
+              setShowHeader(true);
+              scrollTo(descRef);
+            }
+          }}
+        />
         <main className="flex flex-col max-w-screen-lg gap-5 py-5 m-auto text-center text-gray-800">
           <Section ref={descRef}>
             <CenterTitle>Jornadas de Ciencias de la Computación</CenterTitle>
             <Text>
-              Las Jornadas de Ciencias de la Computación vuelven los días 4, 5 y 6
-              de Octubre. Contaremos con la presencia de destacados expositores de
-              distintas localidades argentinas, que están radicados en diferentes
-              partes del mundo. Las charlas se realizarán en el salón de actos de
-              la Facultad de Ciencias Exactas, Ingeniería y Agrimensura, además de
-              actividades y talleres abiertos para todos los asistentes. También
-              estaremos difundiendo más información en la cuenta de Instagram de
-              las JCC.
+              Las Jornadas de Ciencias de la Computación vuelven los días 4, 5 y
+              6 de Octubre. Contaremos con la presencia de destacados
+              expositores de distintas localidades argentinas, que están
+              radicados en diferentes partes del mundo. Las charlas se
+              realizarán en el salón de actos de la Facultad de Ciencias
+              Exactas, Ingeniería y Agrimensura, además de actividades y
+              talleres abiertos para todos los asistentes. También estaremos
+              difundiendo más información en la cuenta de Instagram de las JCC.
             </Text>
             <div className="flex items-center gap-20 text-4xl md:text-6xl">
               <span className="transition-colors hover:text-red-500">
@@ -276,55 +325,71 @@ function App() {
               Las Jornadas de Ciencias de la Computación son una iniciativa del
               Departamento de Ciencias de la Computación de la Facultad de
               Ciencias Exactas, Ingeniería y Agrimensura de la Universidad
-              Nacional de Rosario, de carácter abierto y gratuito. El objetivo de
-              las mismas es promover el contacto de los alumnos de la Facultad con
-              investigadores y profesionales en temas relacionados con el ámbito
-              de las ciencias de la computación. Al mismo tiempo, nos permite
-              mantenernos actualizados sobre las tendencias en investigación y
-              desarrollo de la región.
+              Nacional de Rosario, de carácter abierto y gratuito. El objetivo
+              de las mismas es promover el contacto de los alumnos de la
+              Facultad con investigadores y profesionales en temas relacionados
+              con el ámbito de las ciencias de la computación. Al mismo tiempo,
+              nos permite mantenernos actualizados sobre las tendencias en
+              investigación y desarrollo de la región.
             </Text>
             <Text>
               Las JCC se llevaron a cabo por primera vez en noviembre del año
-              2000. Año tras año han participado decenas de personas provenientes
-              de empresas de desarrollo de software local, estudiantes e
-              investigadores de esta casa de estudios y de universidades
-              destacadas de la zona, entre las cuales podemos mencionar a la
-              Universidad Nacional de La Plata, la Universidad de Buenos Aires, la
-              Universidad Nacional de Córdoba, la Universidad Nacional de Río
-              Cuarto y la Universidad de la República (Montevideo-Uruguay). La
-              realización de las JCC es un proceso que continúa año a año y
-              constituye un logro significativo del cuerpo docente y estudiantil
-              de la carrera Licenciatura en Ciencias de la Computación.
+              2000. Año tras año han participado decenas de personas
+              provenientes de empresas de desarrollo de software local,
+              estudiantes e investigadores de esta casa de estudios y de
+              universidades destacadas de la zona, entre las cuales podemos
+              mencionar a la Universidad Nacional de La Plata, la Universidad de
+              Buenos Aires, la Universidad Nacional de Córdoba, la Universidad
+              Nacional de Río Cuarto y la Universidad de la República
+              (Montevideo-Uruguay). La realización de las JCC es un proceso que
+              continúa año a año y constituye un logro significativo del cuerpo
+              docente y estudiantil de la carrera Licenciatura en Ciencias de la
+              Computación.
             </Text>
           </Section>
           <Section ref={cronogramaRef}>
             <LeftTitle>Cronograma</LeftTitle>
-            {/*             <Day number={1} date="5 de Octubre">
-              <Event time="12:15" title="Almuerzo" gray={true} />
-              <Event time="12:45" title="Acto de apertura" />
-              <Event time="13:00" title="Historia LCC y JCC" speakers="Mauro Jaskelioff y Raúl Kantor">
-                En este panel recorreremos la historia de nuestra carrera, de la JCC y del DCC, contando anécdotas para que charlemos y hagamos un viaje al
-                pasado.
-              </Event>
-            </Day>
-            <Day number={2} date="6 de Octubre">
-              <Event time="09:00" title="Taller de Programación Competitiva" speakers="Mariano Crosetti, Sebastián Mestre y Franco de Rico">
-                Vamos a dar dos clases muy entretenidas de algoritmia y estructuras de datos:
-                <br />
-                • Clase de Grafos: DFS, BFS, Algoritmo de Tarjan para encontrar las componentes fuertemente conexas en un grafo dirigido. Luego de esta clase van
-                a estar en condiciones de atacar el problema H del Torneo Argentino de Programación 2022: click aqui
-                <br />• Clase de Strings: Hashing, Z Algorithm, KMP. Luego de esta clase van a estar en condiciones de atacar (por ejemplo) el problema de contar
-                la cantidad de subcadenas que sean palíndromo en una cadena de caracteres dada: click aqui El taller se realiza en el Laboratorio 1er piso
-              </Event>
-            </Day> */}
+            <Grid3>
+              {window.Schedule?.map((day) => (
+                <Day number={day.dayId} date={day.date}>
+                  {day.talks.map((talk) => (
+                    <Event
+                      time={talk.hour}
+                      title={talk.title}
+                      speakers={talk.shortDescription}
+                    >
+                      {talk.description}
+                    </Event>
+                  ))}
+                </Day>
+              ))}
+            </Grid3>
           </Section>
           <Section ref={actividadesRef}>
             <LeftTitle>Actividades</LeftTitle>
-            {/*             <Day number={1} date="5 de Octubre">
-              <Event time="20:00" title="Fútbol Mixto">
-                Vuelve el clásico futbol 5 de la LCC Ubicación: Instituto Politécnico Superior Gral. San Martín
-              </Event>
-            </Day> */}
+            <Grid3>
+              {window.Schedule?.map((day) =>
+                day.activities ? (
+                  <Day number={day.dayId} date={day.date}>
+                    {day.activities?.map((activity) => (
+                      <Event
+                        time={activity.hour}
+                        title={activity.title}
+                        speakers={activity.shortDescription}
+                      >
+                        {activity.href ? (
+                          <Link url={activity.href}>
+                            {activity.description}
+                          </Link>
+                        ) : (
+                          activity.description
+                        )}
+                      </Event>
+                    ))}
+                  </Day>
+                ) : undefined
+              )}
+            </Grid3>
           </Section>
           <Section ref={apoyoRef}>
             <CenterTitle>Patrocinadores</CenterTitle>
@@ -351,7 +416,9 @@ function App() {
             <img className="w-32" src={logo} alt="Logo" />
             <div className="flex flex-col items-center flex-grow gap-3 md:items-start">
               <span>Licenciatura en Ciencias de la Computación</span>
-              <span>Facultad de Ciencias Exactas, Ingeniería y Agrimensura</span>
+              <span>
+                Facultad de Ciencias Exactas, Ingeniería y Agrimensura
+              </span>
               <span>Universidad Nacional de Rosario</span>
             </div>
             <div className="flex flex-col items-center gap-3 md:items-end">
