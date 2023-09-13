@@ -9,6 +9,8 @@ declare global {
         hour: string;
         shortDescription?: string;
         description?: string;
+        hrefText?: string;
+        hrefUrl?: string;
       }[];
       activities?: {
         title: string;
@@ -18,5 +20,9 @@ declare global {
         href?: string;
       }[];
     }[];
+    Sponsors: {
+      name: string;
+      logo: string;
+    }
   }
 }

@@ -18,6 +18,7 @@ import {
 } from "react-icons/bi";
 import classNames from "classnames";
 import logo from "../images/logo-footer.png";
+import { useIntl } from "react-intl";
 
 function Nav({ children }: PropsWithChildren) {
   return (
@@ -36,9 +37,8 @@ function MobileNav({
   return (
     <>
       <button
-        className={`text-2xl md:hidden transition-transform ${
-          maxHeight !== "0px" ? "rotate-180" : ""
-        }`}
+        className={`text-2xl md:hidden transition-transform ${maxHeight !== "0px" ? "rotate-180" : ""
+          }`}
         onClick={toggle}
       >
         <BiChevronDown />
@@ -135,11 +135,9 @@ function Event({
   return (
     <div className="text-xs border-t md:text-left first:rounded-t last:rounded-b border-x last:border-b md:text-base">
       <div
-        className={`${
-          gray ? "bg-gray-100" : "bg-white"
-        } p-3 md:p-5 gap-3 flex flex-wrap items-center justify-between ${
-          children ? "cursor-pointer" : ""
-        }`}
+        className={`${gray ? "bg-gray-100" : "bg-white"
+          } p-3 md:p-5 gap-3 flex flex-wrap items-center justify-between ${children ? "cursor-pointer transition-colors hover:bg-slate-200" : ""
+          }`}
         onClick={toggle}
       >
         <span>{title}</span>
@@ -228,6 +226,7 @@ function App() {
   const actividadesRef = useRef<HTMLDivElement>(null);
   const apoyoRef = useRef<HTMLDivElement>(null);
   const [showHeader, setShowHeader] = useState<boolean>(false);
+  const { formatMessage } = useIntl();
 
   const scrollTo = (ref: React.RefObject<HTMLDivElement>) => {
     pageRef.current?.scroll({
@@ -349,7 +348,7 @@ function App() {
           </Section>
           <Section ref={cronogramaRef}>
             <LeftTitle>Cronograma</LeftTitle>
-            <Grid3>
+            {/* <Grid3> */}
               {window.Schedule?.map((day) => (
                 <Day number={day.dayId} date={day.date}>
                   {day.talks.map((talk) => (
@@ -358,12 +357,19 @@ function App() {
                       title={talk.title}
                       speakers={talk.shortDescription}
                     >
-                      {talk.description}
+                      {talk.description &&  formatMessage({ id: day.dayId + talk.hour, defaultMessage: talk.description }, {
+                        br: <br />,
+                        href: (
+                          <span className="underline transition-colors cursor-pointer"><Link
+                          key={day.dayId + talk.hour}
+                          url={talk.hrefUrl}
+                        >{talk.hrefText}</Link></span>),
+                      })}
                     </Event>
                   ))}
                 </Day>
               ))}
-            </Grid3>
+            {/* </Grid3> */}
           </Section>
           <Section ref={actividadesRef}>
             <LeftTitle>Actividades</LeftTitle>
