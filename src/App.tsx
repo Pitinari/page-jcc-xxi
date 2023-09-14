@@ -399,14 +399,14 @@ function App() {
           </Section>
           <Section ref={apoyoRef}>
             <CenterTitle>Patrocinadores</CenterTitle>
-            {/*             <Grid3>
-              <span>DeepAgro</span>
-              <span>Grupo San Cristóbal</span>
-              <span>Santa Fe</span>
-              <span>NeuralSoft</span>
-              <span>Trail of Bits</span>
-              <span>Paddle</span>
-            </Grid3> */}
+                        <Grid3>
+              {window.Sponsors.map(sponsor => 
+                <div className="flex flex-col items-center">
+                  <img src={sponsor.logo} />
+                  <label>{sponsor.name}</label>
+                </div>  
+              )}
+            </Grid3>
           </Section>
           <Section>
             <CenterTitle>Auspiciantes</CenterTitle>

@@ -23,6 +23,6 @@ declare global {
     Sponsors: {
       name: string;
       logo: string;
-    }
+    }[];
   }
 }
