@@ -17,12 +17,13 @@ declare global {
         hour: string;
         shortDescription?: string;
         description?: string;
-        href?: string;
+        hrefText?: string;
+        hrefUrl?: string;
       }[];
     }[];
     Sponsors: {
       name: string;
       logo: string;
-    }
+    }[];
   }
 }
