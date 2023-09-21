@@ -4,9 +4,14 @@ window.Schedule = [
         date: "4 de Octubre",
         talks: [
             {
-                title: "Historia JCC",
+                title: "Introducción",
                 hour: "13:00",
                 shortDescription: "Dante Zanarini",
+            },
+            {
+                title: "Introducción a F* y Pulse",
+                hour: "13:00",
+                shortDescription: "Guido Martínez",
             },
             {
                 title: "HPC en el sur global",
@@ -36,9 +41,9 @@ window.Schedule = [
                 description: "Panel con ex-participantes en competencias de programación de prestigio internacional. Divulgación y discusión de temáticas relacionadas - resolución de problemas, algoritmia, trabajo en equipo, experiencias fuera del país, etc."
             },
             {
-                title: "Libre",
+                title: "Cómo implementar el intérprete de un DSL embebido en Haskell",
                 hour: "19:00",
-                shortDescription: ""
+                shortDescription: "Felipe Gorostiaga"
             }
         ],
         activities: [
