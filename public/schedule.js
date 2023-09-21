@@ -38,7 +38,7 @@ window.Schedule = [
             {
                 title: "Libre",
                 hour: "19:00",
-                shortDescription: "Matías Ramos - Carolina Lang - Agustín Gutierrez"
+                shortDescription: ""
             }
         ],
         activities: [
@@ -91,14 +91,18 @@ window.Schedule = [
             {
                 title: "Futbol Mixto",
                 hour: "20:00",
-                shortDescription: "Fútbol Mixto en Pichincha MULTIESPACIO DEPORTIVO desde las 20:00hs a las 22:00hs. Ver más",
-                description: "Hace click para anotarte",
-                href: "https://forms.gle/reinYnQv6wGDDDC98"
+                shortDescription: "Fútbol Mixto en Pichincha MULTIESPACIO DEPORTIVO",
+                description: "Fútbol Mixto en Pichincha MULTIESPACIO DEPORTIVO desde las 20:00hs a las 22:00hs.{br}Hace {href} para anotarte",
+                hrefUrl: "https://forms.gle/reinYnQv6wGDDDC98",
+                hrefText: "click"
             },
             {
                 title: "Noche de juegos de mesa",
-                hour: "22:00",
+                hour: "20:00",
                 shortDescription: "Cerramos la noche con una noche de juegos de mesa.",
+                description: 'Club de Juegos Rosario invita a toda la comunidad de Ciencias Exactas a pasar una noche jugando juegos de mesa en "La Fortaleza" (Salta 2845). {br}Te esperamos el día jueves 5 de octubre desde las 20hs y hasta las 2am para que vengas a disfrutar de la ludoteca del club. {br}El salón cuenta con minimarket y cocina para que no te falte nada para pasar una noche genial.{br}Hace {href} para anotarte',
+                hrefUrl: "https://forms.gle/XiVFm5L6VR7ZisDGA",
+                hrefText: "click"
             }
         ]
     },
@@ -146,7 +150,9 @@ window.Schedule = [
                 title: "JodaCC",
                 hour: "22:00",
                 shortDescription: "Graduación de los alumnos y fiesta de cierre",
-                description: "Fiesta de graduación en playa de la música, todos estan invitados. Hablanos a instagram para pedir tu entrada!"
+                description: "Fiesta de graduación en playa de la música, todos estan invitados. Hablanos a {href} para pedir tu entrada!",
+                hrefText: "instagram",
+                hrefUrl: "https://www.instagram.com/jccfceia"
             }
         ]
     }
