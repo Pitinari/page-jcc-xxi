@@ -381,19 +381,19 @@ function App() {
           <Section ref={apoyoRef}>
             <CenterTitle>Patrocinadores</CenterTitle>
             <Grid3>
-              {window.sponsors.map(sponsor => <a target="_blank" className="w-full h-full flex flex-col items-center" href={sponsor.href}>
-                  <img  className="w-full h-full" src={window.env.baseUrl + sponsor.logo} />
+              {window.sponsors.map(sponsor => <a target="_blank" className="w-full h-full flex items-center justify-center" href={sponsor.href}>
+                  <img  className="object-cover max-h-[150px]" src={window.env.baseUrl + sponsor.logo} />
                 </a>
               )}
             </Grid3>
           </Section>
           <Section>
             <CenterTitle>Auspiciantes</CenterTitle>
-            {/*             <Grid3>
-              <span>Conicet</span>
-              <span>FCEIA</span>
-              <span>UNR</span>
-            </Grid3> */}
+            <div className="flex flex-row content-center w-full gap-10 items-center justify-around">
+              {window.university.map(logo => <a target="_blank" className="h-full flex items-center justify-center" href={logo.href}>
+                  <img className="object-cover max-h-[150px]" src={window.env.baseUrl + logo.logo} />
+                </a>)}
+            </div>
           </Section>
         </main>
         <footer className="flex flex-col items-center justify-center gap-5 p-5 text-xs text-center text-gray-800 bg-white border-t md:gap-7 md:p-7 md:text-base">
