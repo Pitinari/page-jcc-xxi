@@ -66,7 +66,7 @@ window.schedule = [
     date: "5 de Octubre",
     talks: [
       {
-        title: "Taller de programación competitiva",
+        title: "Taller: Combinatoria en programación competitiva",
         hour: "9:00 - 12:00",
         shortDescription: "Francesco Mozzatti y Matías Raimundez",
         description: "Laboratorio 1",
