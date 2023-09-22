@@ -17,7 +17,7 @@ import {
   BiSolidPhone,
 } from "react-icons/bi";
 import classNames from "classnames";
-import logo from "../images/logo-footer.png";
+import logo from "./assets/logo-footer.png";
 import { useIntl } from "react-intl";
 
 function Nav({ children }: PropsWithChildren) {
@@ -348,8 +348,8 @@ function App() {
           </Section>
           <Section ref={cronogramaRef}>
             <LeftTitle>Cronograma</LeftTitle>
-            {/* <Grid3> */}
-              {window.Schedule?.map((day) => (
+            <Grid3>
+              {window.schedule?.map((day) => (
                 <Day number={day.dayId} date={day.date}>
                   {day.talks.map((talk) => (
                     <Event
@@ -374,7 +374,7 @@ function App() {
           <Section ref={actividadesRef}>
             <LeftTitle>Actividades</LeftTitle>
             <Grid3>
-              {window.Schedule?.map((day) =>
+              {window.schedule?.map((day) =>
                 day.activities ? (
                   <Day number={day.dayId} date={day.date}>
                     {day.activities?.map((activity) => (
@@ -399,14 +399,12 @@ function App() {
           </Section>
           <Section ref={apoyoRef}>
             <CenterTitle>Patrocinadores</CenterTitle>
-            {/*             <Grid3>
-              <span>DeepAgro</span>
-              <span>Grupo San Cristóbal</span>
-              <span>Santa Fe</span>
-              <span>NeuralSoft</span>
-              <span>Trail of Bits</span>
-              <span>Paddle</span>
-            </Grid3> */}
+            <Grid3>
+              {window.sponsors.map(sponsor => <a target="_blank" className="w-full h-full flex flex-col items-center" href={sponsor.href}>
+                  <img  className="w-full h-full" src={window.env.baseUrl + sponsor.logo} />
+                </a>
+              )}
+            </Grid3>
           </Section>
           <Section>
             <CenterTitle>Auspiciantes</CenterTitle>

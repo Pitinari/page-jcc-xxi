@@ -1,7 +1,7 @@
 export { }
 declare global {
   interface Window {
-    Schedule: {
+    schedule: {
       dayId: string;
       date: string;
       talks: {
@@ -20,9 +20,12 @@ declare global {
         href?: string;
       }[];
     }[];
-    Sponsors: {
-      name: string;
+    sponsors: {
+      href: string;
       logo: string;
+    }[];
+    env: {
+      baseUrl: string;
     }
   }
 }

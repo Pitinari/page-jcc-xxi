@@ -1,4 +1,4 @@
-window.Schedule = [
+window.schedule = [
     {
         dayId: "1",
         date: "4 de Octubre",
