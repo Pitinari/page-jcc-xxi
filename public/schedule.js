@@ -66,9 +66,9 @@ window.schedule = [
     date: "5 de Octubre",
     talks: [
       {
-        title: "Taller ICPC",
-        hour: "8:00 - 12:00",
-        shortDescription: "Sebastian Mestre y Franco De Rico",
+        title: "Taller de programación competitiva",
+        hour: "9:00 - 12:00",
+        shortDescription: "Francesco Mozzatti y Matías Raimundez",
         description: "Laboratorio 1",
       },
       {
