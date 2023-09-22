@@ -19,6 +19,7 @@ import {
 import classNames from "classnames";
 import logo from "./assets/logo-footer.png";
 import { useIntl } from "react-intl";
+import Modal from "antd/es/modal/Modal";
 
 function Nav({ children }: PropsWithChildren) {
   return (
@@ -123,45 +124,32 @@ function Event({
   title,
   speakers,
   gray,
-  children,
+  onClick,
 }: PropsWithChildren<{
   time: string;
   title: string;
   speakers?: string;
   gray?: boolean;
+  onClick?: () => void;
 }>) {
-  const [ref, maxHeight, toggle] = useAccordion();
 
   return (
-    <div className="text-xs border-t md:text-left first:rounded-t last:rounded-b border-x last:border-b md:text-base">
+    <div className="text-xs border-t text-left first:rounded-t last:rounded-b border-x last:border-b md:text-base">
       <div
         className={`${gray ? "bg-gray-100" : "bg-white"
-          } p-3 md:p-5 gap-3 flex flex-wrap items-center justify-between ${children ? "cursor-pointer transition-colors hover:bg-slate-200" : ""
-          }`}
-        onClick={toggle}
+          } p-3 flex flex-wrap items-center justify-between ${onClick && "cursor-pointer transition-colors hover:bg-slate-200"}`}
+        onClick={onClick}
       >
-        <span>{title}</span>
-        <span>{time}</span>
+        <div className="gap-3 w-full flex grid-cols-2 items-center justify-between">
+          <span>{title}</span>
+          <span>{time}</span>
+        </div>
         {speakers && (
           <p className="w-full font-light text-left text-gray-600 md:text-sm">
             {speakers}
           </p>
         )}
       </div>
-
-      {children && (
-        <div
-          className="overflow-hidden text-justify duration-300 ease-in-out transition-max-height md:text-left"
-          style={{ maxHeight }}
-        >
-          <div
-            ref={ref}
-            className="p-5 font-light text-blue-800 border-t bg-blue-50"
-          >
-            {children}
-          </div>
-        </div>
-      )}
     </div>
   );
 }
@@ -226,6 +214,14 @@ function App() {
   const actividadesRef = useRef<HTMLDivElement>(null);
   const apoyoRef = useRef<HTMLDivElement>(null);
   const [showHeader, setShowHeader] = useState<boolean>(false);
+  const [modalData, setModalData] = useState<{
+    title: string;
+    hour: string;
+    shortDescription?: string;
+    description?: string;
+    hrefText?: string;
+    hrefUrl?: string;
+  }>();
   const { formatMessage } = useIntl();
 
   const scrollTo = (ref: React.RefObject<HTMLDivElement>) => {
@@ -356,20 +352,12 @@ function App() {
                       time={talk.hour}
                       title={talk.title}
                       speakers={talk.shortDescription}
-                    >
-                      {talk.description &&  formatMessage({ id: day.dayId + talk.hour, defaultMessage: talk.description }, {
-                        br: <br />,
-                        href: (
-                          <span className="underline transition-colors cursor-pointer"><Link
-                          key={day.dayId + talk.hour}
-                          url={talk.hrefUrl}
-                        >{talk.hrefText}</Link></span>),
-                      })}
-                    </Event>
+                      onClick={talk.description ? () => setModalData(talk) : undefined}
+                    />
                   ))}
                 </Day>
               ))}
-            {/* </Grid3> */}
+            </Grid3>
           </Section>
           <Section ref={actividadesRef}>
             <LeftTitle>Actividades</LeftTitle>
@@ -382,15 +370,8 @@ function App() {
                         time={activity.hour}
                         title={activity.title}
                         speakers={activity.shortDescription}
-                      >
-                        {activity.href ? (
-                          <Link url={activity.href}>
-                            {activity.description}
-                          </Link>
-                        ) : (
-                          activity.description
-                        )}
-                      </Event>
+                        onClick={activity.description ? () => setModalData(activity) : undefined}
+                      />
                     ))}
                   </Day>
                 ) : undefined
@@ -462,6 +443,20 @@ function App() {
         </footer>
       </div>
       <FloatingButton onClick={() => scrollTo(descRef)} show={!showHeader} />
+      <Modal footer={null} open={!!modalData} onCancel={() => setModalData(undefined)}>
+        <div className="w-full h-full flex flex-col justify-center md:p-8 gap-y-2">
+          <h1 className="font-bold text-2xl text-center">{modalData?.title}</h1>
+          <h4 className="text-gray-500 text-center">{modalData?.shortDescription}</h4>
+          <p>{modalData?.description && formatMessage({ id: modalData.title + modalData.hour, defaultMessage: modalData.description }, {
+            br: <br />,
+            href: (
+              <span className="underline transition-colors cursor-pointer"><Link
+                key={modalData.title + modalData.hour}
+                url={modalData.hrefUrl}
+              >{modalData.hrefText}</Link></span>),
+          })}</p>
+        </div>
+      </Modal>
     </div>
   );
 }
