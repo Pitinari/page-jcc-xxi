@@ -25,6 +25,10 @@ declare global {
       href: string;
       logo: string;
     }[];
+    university: {
+      href: string;
+      logo: string;
+    }[];
     env: {
       baseUrl: string;
     }
