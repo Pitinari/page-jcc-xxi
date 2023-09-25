@@ -23,12 +23,9 @@ window.schedule = [
           "Aunque el título parece un oxímoron, desde el CCAD-UNC creemos que es posible tener HPC para y por nosotros.{br} En esta charla contaré lo que hacemos con el poquito presupuesto que tenemos, como lo estiramos hasta límites insospechados usando una combinación de prácticas de hardware y de software que para el norte global pasan a ser non-compliant.{br} Mostraré que un enfoque bottom-up dominado por la generación de demanda, puede ser la forma de salir de una falsa circularidad a la cual muchas veces se ata al HPC en el sur global ¿Qué fue primero la computadora o las/os usuarios?",
       },
       {
-        title:
-          "Grupos y Algebras de Lie aplicadas al modelado de la incertidumbre.",
+        title: "Cómo implementar el intérprete de un DSL embebido en Haskell",
         hour: "15:00",
-        shortDescription: "Javier Gimenez",
-        description:
-          "Los Grupos y las Álgebras de Lie son herramientas poderosas y unificadas que permiten modelar de manera precisa la evolución de la incertidumbre en las estimaciones de la pose de un robot móvil. En esta charla introductoria y geométrica, se exploran conceptos de Grupos y Álgebras de Lie, demostrando cómo se aplican para mejorar la precisión en el modelado de la incertidumbre. Además, se presentan simulaciones que ilustran las potencialidades de estas herramientas en la práctica.",
+        shortDescription: "Felipe Gorostiaga",
       },
       {
         title: "Coffee Break",
@@ -47,9 +44,12 @@ window.schedule = [
           "Panel con ex-participantes en competencias de programación de prestigio internacional. Divulgación y discusión de temáticas relacionadas - resolución de problemas, algoritmia, trabajo en equipo, experiencias fuera del país, etc.",
       },
       {
-        title: "Cómo implementar el intérprete de un DSL embebido en Haskell",
+        title:
+          "Grupos y Algebras de Lie aplicadas al modelado de la incertidumbre.",
         hour: "19:00",
-        shortDescription: "Felipe Gorostiaga",
+        shortDescription: "Javier Gimenez",
+        description:
+          "Los Grupos y las Álgebras de Lie son herramientas poderosas y unificadas que permiten modelar de manera precisa la evolución de la incertidumbre en las estimaciones de la pose de un robot móvil. En esta charla introductoria y geométrica, se exploran conceptos de Grupos y Álgebras de Lie, demostrando cómo se aplican para mejorar la precisión en el modelado de la incertidumbre. Además, se presentan simulaciones que ilustran las potencialidades de estas herramientas en la práctica.",
       },
     ],
     activities: [
