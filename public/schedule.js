@@ -4,6 +4,10 @@ window.schedule = [
     date: "4 de Octubre",
     talks: [
       {
+        title: "Almuerzo",
+        hour: "12:00",
+      },
+      {
         title: "Acto de apertura",
         hour: "12:30",
         shortDescription: "Autoridades del DCC y la FCEIA",
@@ -70,6 +74,10 @@ window.schedule = [
         hour: "9:00 - 12:00",
         shortDescription: "Francesco Mozzatti y Matías Raimundez",
         description: "Laboratorio 1",
+      },
+      {
+        title: "Almuerzo",
+        hour: "12:00",
       },
       {
         title: "Grafos Basados en Conjuntos",
@@ -139,6 +147,10 @@ window.schedule = [
         hour: "8:00 - 12:00",
         shortDescription: "Neuralsoft",
         description: "Laboratorio 1",
+      },
+      {
+        title: "Almuerzo",
+        hour: "12:00",
       },
       {
         title:

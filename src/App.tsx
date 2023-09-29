@@ -380,12 +380,12 @@ function App() {
           </Section>
           <Section ref={apoyoRef}>
             <CenterTitle>Patrocinadores</CenterTitle>
-            <Grid3>
-              {window.sponsors.map(sponsor => <a target="_blank" className="w-full h-full flex items-center justify-center" href={sponsor.href}>
+            <div className="flex flex-row w-full items-center flex-wrap justify-around">
+              {window.sponsors.map(sponsor => <a target="_blank" className="w-full md:w-1/3 h-full max-h-[214px] flex items-center justify-center p-8" href={sponsor.href}>
                   <img  className="object-cover max-h-[150px]" src={window.env.baseUrl + sponsor.logo} />
                 </a>
               )}
-            </Grid3>
+            </div>
           </Section>
           <Section>
             <CenterTitle>Auspiciantes</CenterTitle>

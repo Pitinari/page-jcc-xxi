@@ -17,7 +17,7 @@ window.sponsors = [
     },
     {
         href: "https://letsbit.io/",
-        logo: "logo_letsbit.jpg"
+        logo: "logo_letsbit.png"
     },
     {
         href: "https://www.trailofbits.com/",
