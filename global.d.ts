@@ -25,6 +25,13 @@ declare global {
       href: string;
       logo: string;
     }[];
+    sponsorsJobSearch: {
+      logo: string;
+      jobTitle: string;
+      jobDescription: string;
+      jobHrefText: string;
+      jobHrefUrl: string;
+    }[];
     university: {
       href: string;
       logo: string;

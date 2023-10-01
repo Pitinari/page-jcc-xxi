@@ -212,6 +212,7 @@ function App() {
   const infoRef = useRef<HTMLDivElement>(null);
   const cronogramaRef = useRef<HTMLDivElement>(null);
   const actividadesRef = useRef<HTMLDivElement>(null);
+  const jobSearchRef = useRef<HTMLDivElement>(null);
   const apoyoRef = useRef<HTMLDivElement>(null);
   const [showHeader, setShowHeader] = useState<boolean>(false);
   const [modalData, setModalData] = useState<{
@@ -221,6 +222,13 @@ function App() {
     description?: string;
     hrefText?: string;
     hrefUrl?: string;
+  }>();
+  const [modalDataJob, setModalDataJob] = useState<{
+    logo: string;
+    jobTitle: string;
+    jobDescription: string;
+    jobHrefText: string;
+    jobHrefUrl: string;
   }>();
   const { formatMessage } = useIntl();
 
@@ -269,6 +277,7 @@ function App() {
               Actividades
             </NavItem>
             <NavItem scroll={() => scrollTo(apoyoRef)}>Apoyo</NavItem>
+            <NavItem scroll={() => scrollTo(jobSearchRef)}>Búsqueda</NavItem>
           </Nav>
           <MobileNav showHeader={showHeader}>
             <NavItem scroll={() => scrollTo(infoRef)}>Info</NavItem>
@@ -277,6 +286,7 @@ function App() {
               Actividades
             </NavItem>
             <NavItem scroll={() => scrollTo(apoyoRef)}>Apoyo</NavItem>
+            <NavItem scroll={() => scrollTo(jobSearchRef)}>Búsqueda</NavItem>
           </MobileNav>
         </header>
         <Landing
@@ -382,19 +392,55 @@ function App() {
             <CenterTitle>Patrocinadores</CenterTitle>
             <div className="flex flex-row w-full items-center flex-wrap justify-around">
               {window.sponsors.map(sponsor => <a target="_blank" className="w-full md:w-1/3 h-full max-h-[214px] flex items-center justify-center p-8" href={sponsor.href}>
-                  <img  className="object-cover max-h-[150px]" src={window.env.baseUrl + sponsor.logo} />
-                </a>
+                <img className="object-cover max-h-[150px]" src={window.env.baseUrl + sponsor.logo} />
+              </a>
               )}
+            </div>
+          </Section>
+          <Section ref={jobSearchRef}>
+            <CenterTitle>Búsqueda Laboral</CenterTitle>
+            <div className="flex flex-row content-center w-full gap-10 items-center justify-around">
+              {window.sponsorsJobSearch.map(sponsor => <div key={sponsor.jobTitle + sponsor.jobHrefUrl} className="cursor-pointer h-full flex flex-col items-center justify-center" onClick={() => setModalDataJob(sponsor)}>
+                <img className="object-cover max-h-[150px]" src={window.env.baseUrl + sponsor.logo} />
+                <h1 className="text-xl font-bold md:text-2xl">{sponsor.jobTitle}</h1>
+              </div>)}
             </div>
           </Section>
           <Section>
             <CenterTitle>Auspiciantes</CenterTitle>
             <div className="flex flex-row content-center w-full gap-10 items-center justify-around">
               {window.university.map(logo => <a target="_blank" className="h-full flex items-center justify-center" href={logo.href}>
-                  <img className="object-cover max-h-[150px]" src={window.env.baseUrl + logo.logo} />
-                </a>)}
+                <img className="object-cover max-h-[150px]" src={window.env.baseUrl + logo.logo} />
+              </a>)}
             </div>
           </Section>
+          <Modal footer={null} open={!!modalData} onCancel={() => setModalData(undefined)}>
+            <div className="w-full h-full flex flex-col justify-center md:p-8 gap-y-2">
+              <h1 className="font-bold text-2xl text-center">{modalData?.title}</h1>
+              <h4 className="text-gray-500 text-center">{modalData?.shortDescription}</h4>
+              <p>{modalData?.description && formatMessage({ id: modalData.title + modalData.hour, defaultMessage: modalData.description }, {
+                br: <br />,
+                href: (
+                  <span className="underline transition-colors cursor-pointer"><Link
+                    key={modalData.title + modalData.hour}
+                    url={modalData.hrefUrl}
+                  >{modalData.hrefText}</Link></span>),
+              })}</p>
+            </div>
+          </Modal>
+          <Modal footer={null} open={!!modalDataJob} onCancel={() => setModalDataJob(undefined)}>
+            <div className="w-full h-full flex flex-col justify-center md:p-8 gap-y-2">
+              <h1 className="font-bold text-2xl text-center">{modalDataJob?.jobTitle}</h1>
+              <p>{modalDataJob?.jobDescription && formatMessage({ id: modalDataJob.jobTitle + modalDataJob.jobHrefUrl, defaultMessage: modalDataJob.jobDescription }, {
+                br: <br />,
+                href: (
+                  <span className="underline transition-colors cursor-pointer"><Link
+                    key={modalDataJob.jobTitle + modalDataJob.jobHrefUrl}
+                    url={modalDataJob.jobHrefUrl}
+                  >{modalDataJob.jobHrefText}</Link></span>),
+              })}</p>
+            </div>
+          </Modal>
         </main>
         <footer className="flex flex-col items-center justify-center gap-5 p-5 text-xs text-center text-gray-800 bg-white border-t md:gap-7 md:p-7 md:text-base">
           <div className="flex flex-col items-center justify-between w-full gap-5 md:flex-row">
@@ -443,20 +489,6 @@ function App() {
         </footer>
       </div>
       <FloatingButton onClick={() => scrollTo(descRef)} show={!showHeader} />
-      <Modal footer={null} open={!!modalData} onCancel={() => setModalData(undefined)}>
-        <div className="w-full h-full flex flex-col justify-center md:p-8 gap-y-2">
-          <h1 className="font-bold text-2xl text-center">{modalData?.title}</h1>
-          <h4 className="text-gray-500 text-center">{modalData?.shortDescription}</h4>
-          <p>{modalData?.description && formatMessage({ id: modalData.title + modalData.hour, defaultMessage: modalData.description }, {
-            br: <br />,
-            href: (
-              <span className="underline transition-colors cursor-pointer"><Link
-                key={modalData.title + modalData.hour}
-                url={modalData.hrefUrl}
-              >{modalData.hrefText}</Link></span>),
-          })}</p>
-        </div>
-      </Modal>
     </div>
   );
 }
