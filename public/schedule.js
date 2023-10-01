@@ -4,6 +4,12 @@ window.schedule = [
     date: "4 de Octubre",
     talks: [
       {
+        title: "Install Fest",
+        hour: "10:00 - 12:00",
+        shortDescription: "Juan Figueredo, Agustín Merino",
+        description: "Nueva edición de la Install Fest! Trae tu compu al SUM para que le instalemos Linux!"
+      },
+      {
         title: "Almuerzo",
         hour: "12:00",
       },
