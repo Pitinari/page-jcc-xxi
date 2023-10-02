@@ -7,7 +7,7 @@ window.schedule = [
         title: "Install Fest",
         hour: "10:00 - 12:00",
         shortDescription: "Juan Figueredo, Agustín Merino",
-        description: "Nueva edición de la Install Fest! Trae tu compu al SUM para que le instalemos Linux!"
+        description: "Nueva edición de la Install Fest! Trae tu compu al SUM para que le instalemos Linux!{br}Se va a llevar a cabo en el DCC (Departamento de Ciencias de la Computación)"
       },
       {
         title: "Almuerzo",
@@ -78,7 +78,7 @@ window.schedule = [
       {
         title: "Taller: Combinatoria en programación competitiva",
         hour: "9:00 - 12:00",
-        shortDescription: "Francesco Mozzatti y Matías Raimundez",
+        shortDescription: "Francesco Mozzatti, Matías Raimundez, Mariano Crosetti y Álvaro Carrera",
         description: "Laboratorio 1",
       },
       {
@@ -100,9 +100,10 @@ window.schedule = [
           'Un aspecto crucial del proceso de desarrollo de software es decidir si el comportamiento del software es el esperado. Para ello, es necesario contar con una especificación del comportamiento esperado. El problema de producir una especificación (oráculo) que permita distinguir el comportamiento correcto/esperado del comportamiento incorrecto/inesperado, es conocido como el "problema del oráculo". La complejidad de este problema, sumado a que el software muchas veces carece de tales especificaciones, ha generado un interés cada vez mayor en la comunidad científica de ingeniería de software.{br}{br} En los últimos años, la creciente adopción de tecnologías basadas en aprendizaje automático, han permitido el desarrollo de novedosas técnicas para la generación automática de oráculos para testing. En esta charla, abordaremos el problema del oráculo en testing de software desde distintas perspectivas, y presentaremos algunos de los principales enfoques basados en aprendizaje automático, incluyendo computación evolutiva, redes neuronales y grandes modelos de lenguaje (LLMs).',
       },
       {
-        title: "Neuralsoft",
+        title: "El rol de la Inteligencia Artificial en FastPrg: del paper a producción",
         hour: "15:00",
-        shortDescription: "",
+        shortDescription: "Neuralsoft",
+        description: 'En esta charla miembros del equipo de Innovación Tecnológica de NeuralSoft compartirán los desafíos que enfrentaron al incorporar a FastPrg los últimos avances en Inteligencia Artificial, cubriendo todo el proceso que implica pasar "del paper a producción".{br}{br}¿Qué es FastPrg?{br}FastPrg es la solución "No Code" de NeuralSoft que incluye un lenguaje de programación de dominio específico, creado exclusivamente para el desarrollo de software empresarial. FastPrg permite programar, sin escribir código, entre 20 y 50 veces más rápido que los lenguajes de programación convencionales.'
       },
       {
         title: "Coffee Break",
@@ -149,10 +150,10 @@ window.schedule = [
     date: "6 de Octubre",
     talks: [
       {
-        title: "Taller",
+        title: "Taller práctico: Construyendo habilidades con inteligencia artificial",
         hour: "8:00 - 12:00",
         shortDescription: "Neuralsoft",
-        description: "Laboratorio 1",
+        description: "Exploraremos cómo crear habilidades basadas en inteligencia artificial utilizando OpenLLaMA y BERT, para integrarlas rápidamente a un software de gestión.{br}{br}Los participantes resolverán problemas de distintos niveles de complejidad, que involucran modelos de lenguaje.{br}{br}Conocimientos requeridos: Python nivel básico.{br}{br}El taller se llevará a cabo en el Laboratorio 1",
       },
       {
         title: "Almuerzo",
