@@ -36,7 +36,7 @@ window.sponsors = [
         logo: "logo_fsadosky.png"
     },
     {
-        href: "https://www.microsoft.com/",
+        href: "https://www.microsoft.com/en-us/research/",
         logo: "logo_microsoft.png"
     }
 ]
