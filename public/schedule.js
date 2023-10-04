@@ -49,7 +49,7 @@ window.schedule = [
       {
         title: "Panel: Por qué hacemos Programación Competitiva",
         hour: "18:00",
-        shortDescription: "Matías Ramos - Carolina Lang - Agustín Gutierrez",
+        shortDescription: "Matías Ramos - Carolina Lang - Agustín Gutierrez - Mariano Crosetti - Álvaro Carrera",
         description:
           "Panel con ex-participantes en competencias de programación de prestigio internacional. Divulgación y discusión de temáticas relacionadas - resolución de problemas, algoritmia, trabajo en equipo, experiencias fuera del país, etc.",
       },
@@ -78,7 +78,7 @@ window.schedule = [
       {
         title: "Taller: Combinatoria en programación competitiva",
         hour: "9:00 - 12:00",
-        shortDescription: "Francesco Mozzatti, Matías Raimundez, Mariano Crosetti y Álvaro Carrera",
+        shortDescription: "Francesco Mozzatti y Matías Raimundez",
         description: "Laboratorio 1",
       },
       {
@@ -102,7 +102,7 @@ window.schedule = [
       {
         title: "El rol de la Inteligencia Artificial en FastPrg: del paper a producción",
         hour: "15:00",
-        shortDescription: "Neuralsoft",
+        shortDescription: "Lucas Biagetti - Juan Bossetti - Germán Frontalini - Dante Venini",
         description: 'En esta charla miembros del equipo de Innovación Tecnológica de NeuralSoft compartirán los desafíos que enfrentaron al incorporar a FastPrg los últimos avances en Inteligencia Artificial, cubriendo todo el proceso que implica pasar "del paper a producción".{br}{br}¿Qué es FastPrg?{br}FastPrg es la solución "No Code" de NeuralSoft que incluye un lenguaje de programación de dominio específico, creado exclusivamente para el desarrollo de software empresarial. FastPrg permite programar, sin escribir código, entre 20 y 50 veces más rápido que los lenguajes de programación convencionales.'
       },
       {
@@ -152,8 +152,8 @@ window.schedule = [
       {
         title: "Taller práctico: Construyendo habilidades con inteligencia artificial",
         hour: "8:00 - 12:00",
-        shortDescription: "Neuralsoft",
-        description: "Exploraremos cómo crear habilidades basadas en inteligencia artificial utilizando OpenLLaMA y BERT, para integrarlas rápidamente a un software de gestión.{br}{br}Los participantes resolverán problemas de distintos niveles de complejidad, que involucran modelos de lenguaje.{br}{br}Conocimientos requeridos: Python nivel básico.{br}{br}El taller se llevará a cabo en el Laboratorio 1",
+        shortDescription: "Lucas Biagetti - Juan Bossetti - Germán Frontalini - Dante Venini",
+        description: "Exploraremos cómo crear habilidades basadas en inteligencia artificial utilizando OpenLLaMA y BERT, para integrarlas rápidamente a un software de gestión.{br}{br}Los participantes resolverán problemas de distintos niveles de complejidad, que involucran modelos de lenguaje.{br}{br}Conocimientos requeridos: Python nivel básico.{br}{br}El taller lo llevará a cabo NueralSoft en el Laboratorio 1",
       },
       {
         title: "Almuerzo",

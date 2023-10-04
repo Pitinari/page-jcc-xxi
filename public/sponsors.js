@@ -34,5 +34,9 @@ window.sponsors = [
     {
         href: "https://fundacionsadosky.org.ar/",
         logo: "logo_fsadosky.png"
+    },
+    {
+        href: "https://www.microsoft.com/",
+        logo: "logo_microsoft.png"
     }
 ]
